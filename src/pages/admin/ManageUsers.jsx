@@ -52,9 +52,9 @@ export default function ManageUsers() {
       const fetched = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
-        // if (data.role !== "admin" && data.role !== "Administrator") {
+        if (data.role !== "admin" && data.role !== "Administrator") {
           fetched.push({ uid: doc.id, ...data });
-        // }
+        }
       });
       setUsers(fetched);
       setIsLoading(false);
