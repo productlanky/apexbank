@@ -4,7 +4,7 @@ import {
   Search, Edit3, X, Save, AlertCircle, ShieldAlert,
   CheckCircle2, DollarSign, UserX, Loader2, Mail,
   Activity, BellRing, Send, Info, AlertTriangle, PlusCircle,
-  ArrowDownRight, ArrowUpRight
+  ArrowDownRight, ArrowUpRight, CreditCard, Lock, Unlock
 } from "lucide-react";
 import { collection, onSnapshot, doc, updateDoc, query, where, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../lib/firebase";
@@ -12,6 +12,9 @@ import { useApp } from "../../context/AppContext";
 
 const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD"];
 const TX_CATEGORIES = ["Deposit", "Withdrawal", "Fee", "Refund", "Correction", "Bonus"];
+
+// Helper to format currency
+const fmt = n => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export default function ManageUsers() {
   const { currentUser } = useApp();
@@ -22,19 +25,19 @@ export default function ManageUsers() {
 
   // Drawer State
   const [selectedUser, setSelectedUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("overview"); 
+  const [activeTab, setActiveTab] = useState("overview"); // overview, cards, transactions, addTx, alerts
   
   // Tab 1: Edit State (Overview)
   const [editStatus, setEditStatus] = useState("active");
-  const [suspendReason, setSuspendReason] = useState(""); // NEW: Suspension reason state
+  const [suspendReason, setSuspendReason] = useState(""); 
   const [editBalances, setEditBalances] = useState({});
   const [isSaving, setIsSaving] = useState(false);
 
-  // Tab 2: User Transactions State
+  // Tab 3: User Transactions State (Bank Ledger)
   const [userTxns, setUserTxns] = useState([]);
   const [isTxnsLoading, setIsTxnsLoading] = useState(false);
 
-  // Tab 3: Alert State
+  // Tab 5: Alert State
   const [alertConfig, setAlertConfig] = useState({ title: '', message: '', type: 'info' });
   const [isSendingAlert, setIsSendingAlert] = useState(false);
 
@@ -52,6 +55,7 @@ export default function ManageUsers() {
       const fetched = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
+        // Comment out if you want to see admins in the list
         if (data.role !== "admin" && data.role !== "Administrator") {
           fetched.push({ uid: doc.id, ...data });
         }
@@ -59,15 +63,18 @@ export default function ManageUsers() {
       setUsers(fetched);
       setIsLoading(false);
 
+      // Keep drawer data fresh
       if (selectedUser) {
         const liveUser = fetched.find((u) => u.uid === selectedUser.uid);
-        if (liveUser && !isSaving && !isSendingAlert && !isCreatingTx) setSelectedUser(liveUser);
+        if (liveUser && !isSaving && !isSendingAlert && !isCreatingTx) {
+          setSelectedUser(liveUser);
+        }
       }
     });
     return () => unsub();
   }, [selectedUser?.uid, isSaving, isSendingAlert, isCreatingTx]);
 
-  // --- FETCH SELECTED USER TRANSACTIONS ---
+  // --- FETCH SELECTED USER TRANSACTIONS (BANK LEDGER) ---
   useEffect(() => {
     if (!selectedUser || activeTab !== 'transactions') return;
     setIsTxnsLoading(true);
@@ -96,7 +103,7 @@ export default function ManageUsers() {
     setActiveTab("overview");
     const s = (user.status || user.accountStatus || "active").toLowerCase();
     setEditStatus(s);
-    setSuspendReason(user.suspensionReason || ""); // Populate existing reason
+    setSuspendReason(user.suspensionReason || ""); 
 
     const currentBalances = user.balances || {};
     if (user.balance !== undefined && !currentBalances.USD) {
@@ -109,7 +116,6 @@ export default function ManageUsers() {
     });
     setEditBalances(initBalances);
 
-    // Reset TX form
     setTxType('credit');
     setTxAmount('');
     setTxCurrency('USD');
@@ -132,11 +138,10 @@ export default function ManageUsers() {
         balance: sanitizedBalances.USD, 
       };
 
-      // Add or clear suspension reason based on selected status
       if (editStatus === 'suspended') {
         updatePayload.suspensionReason = suspendReason;
       } else {
-        updatePayload.suspensionReason = null; // Clear it if they are reactivated
+        updatePayload.suspensionReason = null;
       }
 
       await updateDoc(doc(db, "users", selectedUser.uid), updatePayload);
@@ -181,7 +186,6 @@ export default function ManageUsers() {
     }
   };
 
-  // --- CREATE TRANSACTION ---
   const handleCreateTransaction = async (e) => {
     e.preventDefault();
     if (!txAmount || !txName) return;
@@ -250,7 +254,7 @@ export default function ManageUsers() {
       {/* Header & Search */}
       <div style={{ padding: "24px clamp(20px, 4vw, 32px)", marginBottom: 20 }}>
         <h1 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.5px" }}>User CRM</h1>
-        <p style={{ fontSize: 14, color: "#64748b", fontWeight: 500 }}>Manage client accounts, balances, transactions, and alerts.</p>
+        <p style={{ fontSize: 14, color: "#64748b", fontWeight: 500 }}>Manage client accounts, balances, cards, and transactions.</p>
 
         <div style={{ marginTop: 24, display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderRadius: 16, background: "#fff", border: "1px solid #e2e8f0", boxShadow: "0 2px 4px rgba(0,0,0,0.02)", maxWidth: 500 }}>
           <Search size={18} color="#94a3b8" />
@@ -338,15 +342,18 @@ export default function ManageUsers() {
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => !isSaving && !isCreatingTx && setSelectedUser(null)}
-              style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.4)", backdropFilter: "blur(4px)", zIndex: 100 }}
+              style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.5)", backdropFilter: "blur(4px)", zIndex: 100 }}
             />
 
             <motion.div
-              initial={{ x: "100%", boxShadow: "-20px 0 50px rgba(0,0,0,0)" }} animate={{ x: 0, boxShadow: "-20px 0 50px rgba(0,0,0,0.1)" }} exit={{ x: "100%", boxShadow: "-20px 0 50px rgba(0,0,0,0)" }} transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: "100%", maxWidth: 540, background: "#fff", zIndex: 110, display: "flex", flexDirection: "column" }}
+              initial={{ x: "100%", boxShadow: "-20px 0 50px rgba(0,0,0,0)" }} 
+              animate={{ x: 0, boxShadow: "-20px 0 50px rgba(0,0,0,0.15)" }} 
+              exit={{ x: "100%", boxShadow: "-20px 0 50px rgba(0,0,0,0)" }} 
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: "100vw", maxWidth: 540, background: "#fff", zIndex: 110, display: "flex", flexDirection: "column" }}
             >
               {/* Drawer Header */}
-              <div style={{ padding: "24px 32px 0", background: "#f8fafc" }}>
+              <div style={{ padding: "24px 24px 0", background: "#f8fafc" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
                   <div>
                     <h2 style={{ fontSize: 20, fontWeight: 800, color: "#0f172a" }}>{`${selectedUser.firstName || ''} ${selectedUser.lastName || ''}`.trim()}</h2>
@@ -360,14 +367,15 @@ export default function ManageUsers() {
                 {/* Tabs */}
                 <div style={{ display: 'flex', gap: 20, borderBottom: '1px solid #e2e8f0', overflowX: 'auto', scrollbarWidth: 'none' }}>
                   <TabBtn active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} icon={ShieldAlert} label="Overview" />
-                  <TabBtn active={activeTab === 'transactions'} onClick={() => setActiveTab('transactions')} icon={Activity} label="Feed" />
+                  <TabBtn active={activeTab === 'cards'} onClick={() => setActiveTab('cards')} icon={CreditCard} label="Cards" />
+                  <TabBtn active={activeTab === 'transactions'} onClick={() => setActiveTab('transactions')} icon={Activity} label="Bank Feed" />
                   <TabBtn active={activeTab === 'addTx'} onClick={() => setActiveTab('addTx')} icon={PlusCircle} label="Add Entry" />
                   <TabBtn active={activeTab === 'alerts'} onClick={() => setActiveTab('alerts')} icon={BellRing} label="Alerts" />
                 </div>
               </div>
 
               {/* Drawer Content */}
-              <div style={{ flex: 1, overflowY: "auto", padding: "32px", background: activeTab === 'transactions' ? '#f8fafc' : '#fff' }}>
+              <div style={{ flex: 1, overflowY: "auto", padding: "24px", background: (activeTab === 'transactions' || activeTab === 'cards') ? '#f8fafc' : '#fff' }}>
                 
                 {/* TAB 1: OVERVIEW */}
                 {activeTab === 'overview' && (
@@ -382,7 +390,6 @@ export default function ManageUsers() {
                         <StatusOption title="Suspended" desc="Complete lockout. Cannot log in." val="suspended" current={editStatus} onSelect={setEditStatus} color="#dc2626" bg="#fef2f2" icon={UserX} />
                       </div>
 
-                      {/* --- REASON FOR SUSPENSION INPUT --- */}
                       <AnimatePresence>
                         {editStatus === 'suspended' && (
                           <motion.div
@@ -430,13 +437,88 @@ export default function ManageUsers() {
                   </motion.div>
                 )}
 
-                {/* TAB 2: TRANSACTIONS FEED */}
+                {/* TAB 2: VIRTUAL CARDS */}
+                {activeTab === 'cards' && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    {!selectedUser.cards || selectedUser.cards.length === 0 ? (
+                      <div style={{ textAlign: 'center', padding: '60px 0' }}>
+                        <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#fff', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                          <CreditCard size={28} color="#94a3b8" />
+                        </div>
+                        <p style={{ color: '#0f172a', fontSize: 16, fontWeight: 800, marginBottom: 8 }}>No Virtual Cards</p>
+                        <p style={{ color: '#64748b', fontSize: 14, fontWeight: 500, maxWidth: 280, margin: '0 auto' }}>This user has not been issued any virtual debit cards yet.</p>
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                        {selectedUser.cards.map(card => (
+                          <div key={card.id} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 20, overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
+                            
+                            {/* Card Header */}
+                            <div style={{ padding: '20px 24px', background: card.isLocked ? '#fef2f2' : '#0f172a', color: card.isLocked ? '#dc2626' : '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <CreditCard size={20} />
+                                <div>
+                                  <p style={{ fontWeight: 800, fontFamily: 'monospace', letterSpacing: 2, fontSize: 16 }}>•••• {card.cardNumber.slice(-4)}</p>
+                                  <p style={{ fontSize: 12, opacity: 0.8, marginTop: 2 }}>{card.brand} • Exp {card.expiry}</p>
+                                </div>
+                              </div>
+                              <span style={{ fontSize: 12, fontWeight: 800, padding: '4px 10px', borderRadius: 8, background: card.isLocked ? '#fecaca' : 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                {card.isLocked ? <><Lock size={12} /> LOCKED</> : <><Unlock size={12} /> ACTIVE</>}
+                              </span>
+                            </div>
+
+                            {/* Card Stats */}
+                            <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9', background: '#f8fafc' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 13 }}>
+                                <span style={{ color: '#64748b', fontWeight: 600 }}>Monthly Limit Utilization</span>
+                                <span style={{ color: '#0f172a', fontWeight: 800 }}>{fmt(card.spent)} / {fmt(card.limit)}</span>
+                              </div>
+                              <div style={{ height: 6, borderRadius: 99, background: '#e2e8f0', overflow: 'hidden' }}>
+                                <div style={{ height: '100%', width: `${Math.min((card.spent/card.limit)*100, 100)}%`, background: card.isLocked ? '#ef4444' : '#059669', borderRadius: 99 }} />
+                              </div>
+                            </div>
+
+                            {/* Card Txns */}
+                            <div style={{ padding: '20px 24px' }}>
+                              <p style={{ fontSize: 13, fontWeight: 800, color: '#0f172a', marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Card Charges Ledger</p>
+                              {(!card.cardTransactions || card.cardTransactions.length === 0) ? (
+                                <p style={{ fontSize: 14, color: '#94a3b8', fontStyle: 'italic' }}>No charges have been made on this card.</p>
+                              ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                  {card.cardTransactions.map(tx => (
+                                    <div key={tx.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 12, background: '#f8fafc', borderRadius: 12, border: '1px solid #e2e8f0' }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                        <div style={{ width: 32, height: 32, borderRadius: 8, background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: '#475569' }}>
+                                          {tx.merchant?.charAt(0)}
+                                        </div>
+                                        <div>
+                                          <p style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>{tx.merchant}</p>
+                                          <p style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>{new Date(tx.date).toLocaleDateString()}</p>
+                                        </div>
+                                      </div>
+                                      <p style={{ fontSize: 14, fontWeight: 800, color: '#0f172a' }}>-{fmt(tx.amount)}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* TAB 3: BANK TRANSACTIONS FEED */}
                 {activeTab === 'transactions' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     {isTxnsLoading ? (
                       <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }}><Loader2 className="animate-spin" color="#94a3b8" /></div>
                     ) : userTxns.length === 0 ? (
-                      <p style={{ textAlign: 'center', color: '#64748b', fontSize: 14, padding: '40px 0' }}>No transactions found for this user.</p>
+                      <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                        <Activity size={32} color="#cbd5e1" style={{ margin: '0 auto 12px' }} />
+                        <p style={{ color: '#64748b', fontSize: 14, fontWeight: 500 }}>No bank transactions found.</p>
+                      </div>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                         {userTxns.map(t => {
@@ -465,11 +547,10 @@ export default function ManageUsers() {
                 {activeTab === 'addTx' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.5, marginBottom: 24 }}>
-                      Create an official ledger entry. This instantly updates the user's balance and appears in their transaction history.
+                      Create an official ledger entry. This instantly updates the user's bank balance and appears in their main transaction history.
                     </p>
 
                     <form onSubmit={handleCreateTransaction} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                      
                       <div>
                         <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "#475569", marginBottom: 8 }}>Transaction Flow</label>
                         <div style={{ display: 'flex', gap: 10 }}>
@@ -530,7 +611,7 @@ export default function ManageUsers() {
                   </motion.div>
                 )}
 
-                {/* TAB 3: ALERTS */}
+                {/* TAB 5: ALERTS */}
                 {activeTab === 'alerts' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.5, marginBottom: 24 }}>
@@ -538,7 +619,6 @@ export default function ManageUsers() {
                     </p>
 
                     <form onSubmit={handleSendAlert} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                      
                       <div>
                         <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "#475569", marginBottom: 8 }}>Alert Type</label>
                         <div style={{ display: 'flex', gap: 10 }}>
@@ -583,7 +663,7 @@ export default function ManageUsers() {
 
               {/* Drawer Footer (Only visible on Overview) */}
               {activeTab === 'overview' && (
-                <div style={{ padding: "24px 32px", borderTop: "1px solid #e2e8f0", background: "#f8fafc", display: "flex", gap: 12 }}>
+                <div style={{ padding: "20px 24px", borderTop: "1px solid #e2e8f0", background: "#f8fafc", display: "flex", gap: 12 }}>
                   <button disabled={isSaving} onClick={handleSaveOverview} style={{ flex: 1, padding: "16px", background: "#0f172a", border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700, color: "#fff", cursor: isSaving ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 12px rgba(15,23,42,0.15)" }}>
                     {isSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />} Save Changes
                   </button>

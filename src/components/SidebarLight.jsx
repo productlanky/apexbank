@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Send, ArrowLeftRight,
-  Landmark, Ticket, FileText, Settings, LogOut, ChevronRight
+  Landmark, Ticket, FileText, Settings, LogOut, ChevronRight,
+  Download,
+  CreditCard
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
@@ -13,7 +15,8 @@ const NAV = [
   { id: 'send',         label: 'Send Money',          icon: Send },
   { id: 'exchange', label: 'Exchange Money',      icon: ArrowLeftRight, key: 'exchange' }, 
   { id: 'wire',         label: 'Wire Transfer',       icon: Send,           key: 'wire' }, 
-  // { id: 'fixed',        label: 'Fixed Deposit',       icon: Landmark,       key: 'fixed' },
+  { id: 'receive',        label: 'Receive Money',       icon: Download,       key: 'receive' },
+  { id: 'cards',          label: 'My Card',            icon: CreditCard,     key: 'cards' },
   { id: 'support',      label: 'Support Tickets',     icon: Ticket,         key: 'support' },
   { id: 'transactions', label: 'Transactions Report', icon: FileText,       key: 'report' }, 
 ];

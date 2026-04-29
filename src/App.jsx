@@ -35,6 +35,8 @@ import CreateUser from "./pages/admin/Create";
 import ManageTickets from "./pages/admin/ManageTickets";
 
 import "./index.css";
+import Receive from "./pages/dashboard/Receive";
+import Cards from "./pages/dashboard/Cards";
 
 // ─── PREMIUM LOADER COMPONENT ─────────────────────────────────────────────
 function FullScreenLoader({ text }) {
@@ -169,8 +171,10 @@ export default function App() {
               <Route path="transactions" element={<Transactions />} />
               <Route path="wire" element={<WireTransfer />} />
               <Route path="send" element={<Send />} />
-              <Route path="support" element={<SupportTickets />} />
+              <Route path="support" element={<SupportTickets />} />s
               <Route path="settings" element={<Settings />} />
+              <Route path="receive" element={<Receive />} />
+              <Route path="cards" element={<Cards />} />
             </Route>
           </Route>
 
