@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, Bell, ChevronDown, LogOut, Check, ShieldCheck
@@ -15,7 +15,7 @@ function Toggle({ isOn, onToggle }) {
       onClick={onToggle}
       style={{
         width: 44, height: 24, borderRadius: 12, 
-        background: isOn ? '#059669' : '#cbd5e1',
+        background: isOn ? '#ea580c' : '#cbd5e1', // MidFirst Orange
         display: 'flex', alignItems: 'center', padding: 2, cursor: 'pointer',
         justifyContent: isOn ? 'flex-end' : 'flex-start', transition: 'background 0.3s'
       }}
@@ -49,7 +49,7 @@ export default function Settings() {
   // --- PERSISTENT TOGGLE STATE ---
   // 1. Initialize state by checking localStorage first
   const [toggles, setToggles] = useState(() => {
-    const savedPrefs = localStorage.getItem('apex_preferences');
+    const savedPrefs = localStorage.getItem('midfirst_preferences');
     if (savedPrefs) {
       return JSON.parse(savedPrefs);
     }
@@ -60,7 +60,7 @@ export default function Settings() {
   const handleToggle = (key) => {
     setToggles(prev => {
       const newToggles = { ...prev, [key]: !prev[key] };
-      localStorage.setItem('apex_preferences', JSON.stringify(newToggles));
+      localStorage.setItem('midfirst_preferences', JSON.stringify(newToggles));
       return newToggles;
     });
   };
@@ -89,7 +89,7 @@ export default function Settings() {
           onClick={() => setExpanded(isOpen ? null : id)}
           style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px', background: isOpen ? '#f8fafc' : 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'background 0.2s' }}
         >
-          <div style={{ width: 40, height: 40, borderRadius: 12, background: isOpen ? '#10b981' : '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.2s' }}>
+          <div style={{ width: 40, height: 40, borderRadius: 12, background: isOpen ? '#ea580c' : '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.2s' }}>
             <Icon size={20} color={isOpen ? '#fff' : '#64748b'} />
           </div>
           <div style={{ flex: 1 }}>
@@ -126,7 +126,7 @@ export default function Settings() {
         
         {/* --- PROFILE CARD --- */}
         <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 24, padding: '24px', display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32, boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
-          <div style={{ width: 64, height: 64, borderRadius: 18, background: 'linear-gradient(135deg, #059669, #10b981)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 800, color: '#fff', flexShrink: 0, boxShadow: '0 4px 12px rgba(16,185,129,0.2)' }}>
+          <div style={{ width: 64, height: 64, borderRadius: 18, background: 'linear-gradient(135deg, #ea580c, #f97316)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 800, color: '#fff', flexShrink: 0, boxShadow: '0 4px 12px rgba(234, 88, 12, 0.2)' }}>
             {initials}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -137,7 +137,7 @@ export default function Settings() {
               {currentUser?.email}
             </p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: '#ecfdf5', borderRadius: 99, color: '#059669', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: '#fff7ed', borderRadius: 99, color: '#ea580c', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
             <Check size={14} strokeWidth={3} /> Verified
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function Settings() {
               <SettingField label="Registered Email" value={currentUser?.email} />
               <SettingField label="Account Number" value={userProfile?.accountNumber} />
               <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', background: '#f8fafc', borderRadius: 12, border: '1px solid #e2e8f0' }}>
-                <ShieldCheck size={18} color="#059669" />
+                <ShieldCheck size={18} color="#ea580c" />
                 <p style={{ fontSize: 13, color: '#475569', fontWeight: 500, lineHeight: 1.5 }}>
                   To change your registered email or legal name, please contact our support team.
                 </p>
@@ -189,7 +189,7 @@ export default function Settings() {
         >
           <LogOut size={18} /> Sign Out securely
         </motion.button>
-        <p style={{ textAlign: 'center', fontSize: 12, color: '#94a3b8', marginTop: 16, fontWeight: 500 }}>Apex Banking App v2.1.0</p>
+        <p style={{ textAlign: 'center', fontSize: 12, color: '#94a3b8', marginTop: 16, fontWeight: 500 }}>MidFirst Banking App v2.1.0</p>
 
       </div>
     </div>

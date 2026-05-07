@@ -161,13 +161,13 @@ export default function DashboardLight({ onNav }) {
                 minWidth: 240,
                 flex: "1 0 240px",
                 background: isPrimary
-                  ? "linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)"
+                  ? "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)" // Brand Orange Gradient
                   : "#ffffff",
                 borderRadius: 14,
                 border: isPrimary ? "none" : "1px solid #e2e8f0",
                 padding: "20px",
                 boxShadow: isPrimary
-                  ? "0 8px 16px rgba(15, 23, 42, 0.15)"
+                  ? "0 8px 16px rgba(234, 88, 12, 0.25)" // Brand Orange Shadow
                   : "0 2px 4px rgba(0,0,0,0.02)",
                 position: "relative",
                 overflow: "hidden",
@@ -182,7 +182,7 @@ export default function DashboardLight({ onNav }) {
                     width: 100,
                     height: 100,
                     borderRadius: "50%",
-                    background: "rgba(255,255,255,0.05)",
+                    background: "rgba(255,255,255,0.1)",
                   }}
                 />
               )}
@@ -200,7 +200,7 @@ export default function DashboardLight({ onNav }) {
                 <p
                   style={{
                     fontSize: 12,
-                    color: isPrimary ? "#94a3b8" : "#64748b",
+                    color: isPrimary ? "#ffedd5" : "#64748b", // Light orange for contrast
                     fontWeight: 600,
                     textTransform: "uppercase",
                     letterSpacing: "0.05em",
@@ -208,7 +208,7 @@ export default function DashboardLight({ onNav }) {
                 >
                   {c.code} Balance
                 </p>
-                <CardIcon size={18} color={isPrimary ? "#cbd5e1" : "#94a3b8"} />
+                <CardIcon size={18} color={isPrimary ? "#fed7aa" : "#94a3b8"} />
               </div>
 
               <p
@@ -289,7 +289,7 @@ export default function DashboardLight({ onNav }) {
               background: "none",
               border: "none",
               cursor: "pointer",
-              color: "#059669",
+              color: "#ea580c", // Brand Orange
               fontWeight: 700,
             }}
           >

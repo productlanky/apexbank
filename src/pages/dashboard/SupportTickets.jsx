@@ -243,7 +243,7 @@ export default function SupportTickets() {
 
               <div style={{ marginTop: 32, display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
                 <button type="button" onClick={() => setView('list')} style={{ padding: '14px 24px', fontSize: 15, fontWeight: 600, color: '#64748b', background: 'transparent', border: 'none', cursor: 'pointer' }}>Cancel</button>
-                <button type="submit" disabled={isSubmitting} style={{ padding: '14px 28px', fontSize: 15, fontWeight: 700, color: '#fff', background: '#059669', borderRadius: 12, border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 12px rgba(5,150,105,0.2)' }}>
+                <button type="submit" disabled={isSubmitting} style={{ padding: '14px 28px', fontSize: 15, fontWeight: 700, color: '#fff', background: '#ea580c', borderRadius: 12, border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 12px rgba(234, 88, 12, 0.2)' }}>
                   {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
                   Submit Ticket
                 </button>
@@ -279,7 +279,7 @@ export default function SupportTickets() {
                     <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: isUser ? 'flex-end' : 'flex-start' }}>
                       <div style={{ 
                         maxWidth: '80%', padding: '14px 18px', borderRadius: 18, fontSize: 14, lineHeight: 1.5,
-                        background: isUser ? '#0f172a' : '#f1f5f9',
+                        background: isUser ? '#ea580c' : '#f1f5f9', // Updated to Brand Orange
                         color: isUser ? '#fff' : '#0f172a',
                         borderBottomRightRadius: isUser ? 4 : 18,
                         borderBottomLeftRadius: isUser ? 18 : 4
@@ -301,7 +301,7 @@ export default function SupportTickets() {
                     placeholder="Type your reply..." value={replyText} onChange={e => setReplyText(e.target.value)}
                     style={{ flex: 1, padding: '14px 20px', borderRadius: 99, background: '#f8fafc', border: '1px solid #e2e8f0', fontSize: 14, color: '#0f172a', outline: 'none' }}
                   />
-                  <button type="submit" disabled={isSubmitting || !replyText.trim()} style={{ width: 48, height: 48, borderRadius: '50%', background: replyText.trim() ? '#059669' : '#cbd5e1', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: replyText.trim() ? 'pointer' : 'default', transition: 'background 0.2s', flexShrink: 0 }}>
+                  <button type="submit" disabled={isSubmitting || !replyText.trim()} style={{ width: 48, height: 48, borderRadius: '50%', background: replyText.trim() ? '#ea580c' : '#cbd5e1', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: replyText.trim() ? 'pointer' : 'default', transition: 'background 0.2s', flexShrink: 0 }}>
                     {isSubmitting ? <Loader2 size={20} color="#fff" className="animate-spin" /> : <Send size={20} color="#fff" style={{ marginLeft: -2 }} />}
                   </button>
                 </form>

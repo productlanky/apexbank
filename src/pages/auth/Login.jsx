@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Zap, Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../../lib/firebase'; 
@@ -114,22 +114,20 @@ export default function Login() {
       <div className="hidden md:flex" style={{ flex: 1, background: '#020617', position: 'relative', overflow: 'hidden', flexDirection: 'column', padding: '40px 60px' }}>
         
         {/* Abstract Background Glows */}
-        <motion.div animate={{ rotate: 360, scale: [1, 1.1, 1] }} transition={{ duration: 25, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-10%', left: '-20%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(16,185,129,0.1) 0%, rgba(2,6,23,0) 60%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
-        <motion.div animate={{ rotate: -360, scale: [1, 1.2, 1] }} transition={{ duration: 30, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', bottom: '-20%', right: '-10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(56,189,248,0.08) 0%, rgba(2,6,23,0) 60%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+        <motion.div animate={{ rotate: 360, scale: [1, 1.1, 1] }} transition={{ duration: 25, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-10%', left: '-20%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(234,88,12,0.15) 0%, rgba(2,6,23,0) 60%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+        <motion.div animate={{ rotate: -360, scale: [1, 1.2, 1] }} transition={{ duration: 30, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', bottom: '-20%', right: '-10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(251,146,60,0.08) 0%, rgba(2,6,23,0) 60%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
 
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 10, cursor: 'pointer' }} onClick={() => navigate('/')}>
-          <div style={{ width: 36, height: 36, borderRadius: 10, background: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Zap size={20} color="#fff" fill="#fff" />
-          </div>
-          <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: '#fff' }}>Apex</span>
+          <img src="/logo.png" alt="MidFirst Bank Logo" style={{ height: 28, width: 'auto' }} />
+          <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: '#fff' }}>MidFirst Bank</span>
         </div>
 
         {/* Hero Copy */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', zIndex: 10 }}>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
             <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 800, color: '#fff', lineHeight: 1.1, letterSpacing: '-1px', marginBottom: 24 }}>
-              Manage your <br/>capital with <span style={{ color: '#34d399' }}>precision.</span>
+              Manage your <br/>capital with <span style={{ color: '#f97316' }}>precision.</span>
             </h1>
             <p style={{ fontSize: 18, color: '#94a3b8', lineHeight: 1.6, maxWidth: 480 }}>
               Log in to access your dashboard, issue virtual cards, and execute global wire transfers in seconds.
@@ -139,7 +137,7 @@ export default function Login() {
 
         {/* Minimal Footer */}
         <div style={{ position: 'relative', zIndex: 10, display: 'flex', gap: 24 }}>
-          <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>© 2026 Apex Financial</span>
+          <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>© {new Date().getFullYear()} MidFirst Bank</span>
           <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>Support</span>
           <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>System Status: <span style={{ color: '#10b981' }}>Operational</span></span>
         </div>
@@ -150,10 +148,8 @@ export default function Login() {
         
         {/* Mobile Logo */}
         <div className="md:hidden" style={{ position: 'absolute', top: 24, left: 24, display: 'flex', alignItems: 'center', gap: 10 }} onClick={() => navigate('/')}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Zap size={18} color="#fff" />
-          </div>
-          <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', color: '#0f172a' }}>Apex</span>
+          <img src="/logo.png" alt="MidFirst Bank Logo" style={{ height: 24, width: 'auto' }} />
+          <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', color: '#0f172a' }}>MidFirst Bank</span>
         </div>
 
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" style={{ width: '100%', maxWidth: 400 }}>
@@ -196,7 +192,7 @@ export default function Login() {
                     background: '#fff', border: '1px solid #e2e8f0', color: '#0f172a', fontSize: 15, fontWeight: 500, 
                     outline: 'none', transition: 'border 0.2s, box-shadow 0.2s' 
                   }}
-                  onFocus={e => { e.target.style.borderColor = '#059669'; e.target.style.boxShadow = '0 0 0 4px rgba(16,185,129,0.1)'; }}
+                  onFocus={e => { e.target.style.borderColor = '#ea580c'; e.target.style.boxShadow = '0 0 0 4px rgba(234,88,12,0.1)'; }}
                   onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
@@ -216,7 +212,7 @@ export default function Login() {
                     background: '#fff', border: '1px solid #e2e8f0', color: '#0f172a', fontSize: 15, fontWeight: 500, 
                     outline: 'none', transition: 'border 0.2s, box-shadow 0.2s' 
                   }}
-                  onFocus={e => { e.target.style.borderColor = '#059669'; e.target.style.boxShadow = '0 0 0 4px rgba(16,185,129,0.1)'; }}
+                  onFocus={e => { e.target.style.borderColor = '#ea580c'; e.target.style.boxShadow = '0 0 0 4px rgba(234,88,12,0.1)'; }}
                   onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
                 />
                 <button 
@@ -231,10 +227,10 @@ export default function Login() {
             {/* Remember Me & Forgot Password */}
             <motion.div variants={fadeUp} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                <input type="checkbox" style={{ width: 16, height: 16, accentColor: '#059669', cursor: 'pointer' }} />
+                <input type="checkbox" style={{ width: 16, height: 16, accentColor: '#ea580c', cursor: 'pointer' }} />
                 <span style={{ fontSize: 13, fontWeight: 600, color: '#475569' }}>Remember me</span>
               </label>
-              <button type="button" style={{ background: 'none', border: 'none', color: '#059669', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
+              <button type="button" style={{ background: 'none', border: 'none', color: '#ea580c', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
                 Forgot password?
               </button>
             </motion.div>

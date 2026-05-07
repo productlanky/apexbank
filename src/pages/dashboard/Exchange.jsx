@@ -205,11 +205,11 @@ export default function Exchange({ onNav }) {
             width: 88,
             height: 88,
             borderRadius: "50%",
-            background: "linear-gradient(135deg, #059669, #10b981)",
+            background: "linear-gradient(135deg, #ea580c, #f97316)", // Updated color
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            boxShadow: "0 0 0 16px rgba(16,185,129,0.1)",
+            boxShadow: "0 0 0 16px rgba(234, 88, 12, 0.1)", // Updated shadow
             marginBottom: 28,
           }}
         >
@@ -243,7 +243,7 @@ export default function Exchange({ onNav }) {
             {numAmount.toLocaleString()} {fromCurrency}
           </strong>{" "}
           to{" "}
-          <strong style={{ color: "#059669" }}>
+          <strong style={{ color: "#ea580c" }}> {/* Updated color */}
             {toSym}
             {convertedAmount.toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -340,7 +340,7 @@ export default function Exchange({ onNav }) {
                 fontSize: 15,
                 fontWeight: 700,
                 color: "#fff",
-                background: "#059669",
+                background: "#ea580c", // Updated color
                 borderRadius: 14,
                 border: "none",
                 cursor: "pointer",
@@ -402,7 +402,7 @@ export default function Exchange({ onNav }) {
           {isLoadingRates ? (
             <Loader2 size={16} className="animate-spin" color="#94a3b8" />
           ) : (
-            <TrendingUp size={16} color="#059669" />
+            <TrendingUp size={16} color="#ea580c" /> // Updated color
           )}
           {isLoadingRates ? "Connecting to market..." : "Live Market Rates"}
         </div>
@@ -711,7 +711,7 @@ export default function Exchange({ onNav }) {
                     color: "#475569",
                   }}
                 >
-                  <RefreshCcw size={16} color="#059669" />
+                  <RefreshCcw size={16} color="#ea580c" /> {/* Updated color */}
                   {rates
                     ? `1 ${fromCurrency} = ${exchangeRate.toFixed(4)} ${toCurrency}`
                     : "Fetching rate..."}
@@ -802,7 +802,7 @@ export default function Exchange({ onNav }) {
                       {fmt(numAmount)} {fromCurrency}
                     </span>
                     <ArrowDownUp size={24} color="#38bdf8" />
-                    <span style={{ color: "#10b981" }}>
+                    <span style={{ color: "#ea580c" }}> {/* Updated color */}
                       {toSym}
                       {convertedAmount.toLocaleString(undefined, {
                         minimumFractionDigits: 2,
@@ -881,7 +881,7 @@ export default function Exchange({ onNav }) {
                     fontSize: 16,
                     fontWeight: 700,
                     color: "#fff",
-                    background: "#059669",
+                    background: "#ea580c", // Updated color
                     borderRadius: 16,
                     border: "none",
                     cursor: isProcessing ? "not-allowed" : "pointer",
@@ -889,7 +889,7 @@ export default function Exchange({ onNav }) {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 8,
-                    boxShadow: "0 8px 20px rgba(5,150,105,0.2)",
+                    boxShadow: "0 8px 20px rgba(234, 88, 12, 0.2)", // Updated shadow
                   }}
                 >
                   {isProcessing ? (

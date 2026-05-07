@@ -27,7 +27,7 @@ export default function Sidebar({ active, onNav }) {
         }}>
           <Leaf size={15} color="#fff" fill="#fff" />
         </div>
-        <span style={{ fontSize: 17, fontWeight: 800, color: '#fff', letterSpacing: '-0.3px' }}>Apex</span>
+        <span style={{ fontSize: 17, fontWeight: 800, color: '#fff', letterSpacing: '-0.3px' }}>MIDFIRST</span>
         <span style={{ fontSize: 10, fontWeight: 700, color: '#10b981', background: 'rgba(16,185,129,0.12)', borderRadius: 6, padding: '2px 7px', marginLeft: -2 }}>BANK</span>
       </div>
 

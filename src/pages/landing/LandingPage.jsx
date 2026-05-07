@@ -90,7 +90,7 @@ const DEPOSIT_PLANS = [
     max: "$4,999",
     rate: "25%",
     term: "90 days",
-    color: "#059669",
+    color: "#ea580c",
   },
   {
     name: "Growth",
@@ -116,7 +116,7 @@ const LOAN_PLANS = [
     range: "$1K – $50K",
     rate: "5%",
     term: "12–60 mo.",
-    color: "#059669",
+    color: "#ea580c",
   },
   {
     name: "Business",
@@ -153,7 +153,7 @@ const WHY = [
   {
     icon: Users,
     title: "Trusted Globally",
-    desc: "Over 50,000 customers worldwide trust Apex Bank with their finances.",
+    desc: "Over 50,000 customers worldwide trust MidFirst Bank with their finances.",
   },
 ];
 
@@ -252,20 +252,7 @@ export default function Landing() {
           }}
           onClick={() => window.scrollTo(0, 0)}
         >
-          {/* <div
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 10,
-              background: "linear-gradient(135deg,#059669,#10b981)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Leaf size={18} color="#fff" fill="#fff" />
-          </div> */}
-          <img src="/favicon.svg" alt="Apex Bank Logo" className="h-5 w-auto"/>
+          <img src="/logo.png" alt="MidFirst Bank Logo" className="h-5 w-auto"/>
           {/* Logo text turns dark ONLY if the white mobile menu is open */}
           <span
             style={{
@@ -276,7 +263,7 @@ export default function Landing() {
               transition: "color 0.3s",
             }}
           >
-            Apex Bank
+            MIDFIRST BANK
           </span>
         </div>
 
@@ -322,7 +309,7 @@ export default function Landing() {
               cursor: "pointer",
               transition: "color 0.2s",
             }}
-            onMouseEnter={(e) => (e.target.style.color = "#10b981")}
+            onMouseEnter={(e) => (e.target.style.color = "#f97316")}
             onMouseLeave={(e) => (e.target.style.color = "#fff")}
           >
             Sign In
@@ -337,10 +324,10 @@ export default function Landing() {
               fontSize: 14,
               fontWeight: 700,
               color: "#fff",
-              background: "#059669",
+              background: "#ea580c",
               border: "none",
               cursor: "pointer",
-              boxShadow: "0 4px 14px rgba(5, 150, 105, 0.3)",
+              boxShadow: "0 4px 14px rgba(234, 88, 12, 0.3)",
             }}
           >
             Get Started
@@ -410,7 +397,7 @@ export default function Landing() {
                   navigate("/login");
                 }}
                 style={{
-                  background: "#059669",
+                  background: "#ea580c",
                   color: "#fff",
                   border: "none",
                   borderRadius: 16,
@@ -420,7 +407,7 @@ export default function Landing() {
                   cursor: "pointer",
                   marginTop: 16,
                   width: "100%",
-                  boxShadow: "0 4px 12px rgba(5,150,105,0.2)",
+                  boxShadow: "0 4px 12px rgba(234,88,12,0.2)",
                 }}
               >
                 Sign In / Get Started
@@ -527,10 +514,10 @@ export default function Landing() {
                       fontSize: 16,
                       fontWeight: 700,
                       color: "#fff",
-                      background: "#059669",
+                      background: "#ea580c",
                       border: "none",
                       cursor: "pointer",
-                      boxShadow: "0 8px 24px rgba(5,150,105,0.4)",
+                      boxShadow: "0 8px 24px rgba(234,88,12,0.4)",
                     }}
                   >
                     Get Started
@@ -639,7 +626,7 @@ export default function Landing() {
                 width: i === slide ? 32 : 8,
                 height: 8,
                 borderRadius: 4,
-                background: i === slide ? "#10b981" : "rgba(255,255,255,0.3)",
+                background: i === slide ? "#ea580c" : "rgba(255,255,255,0.3)",
                 border: "none",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
@@ -771,7 +758,7 @@ export default function Landing() {
                   style={{
                     fontSize: 36,
                     fontWeight: 800,
-                    color: "#059669",
+                    color: "#ea580c",
                     letterSpacing: "-1px",
                   }}
                 >
@@ -790,9 +777,9 @@ export default function Landing() {
                 style={{
                   display: "inline-block",
                   padding: "6px 14px",
-                  background: "#ecfdf5",
+                  background: "#fff7ed",
                   borderRadius: 99,
-                  color: "#059669",
+                  color: "#ea580c",
                   fontSize: 13,
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -800,7 +787,7 @@ export default function Landing() {
                   marginBottom: 24,
                 }}
               >
-                About Apex Bank
+                About MidFirst Bank
               </div>
               <h2
                 style={{
@@ -822,7 +809,7 @@ export default function Landing() {
                   marginBottom: 24,
                 }}
               >
-                Apex Bank was founded with a single mission: to make world-class
+                MidFirst Bank was founded with a single mission: to make world-class
                 financial services accessible to everyone. We combine
                 cutting-edge technology with a human-first approach.
               </p>
@@ -884,7 +871,7 @@ export default function Landing() {
                 style={{
                   fontSize: 14,
                   fontWeight: 700,
-                  color: "#059669",
+                  color: "#ea580c",
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
                   marginBottom: 12,
@@ -954,14 +941,14 @@ export default function Landing() {
                       width: 56,
                       height: 56,
                       borderRadius: 16,
-                      background: "#ecfdf5",
+                      background: "#fff7ed",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       marginBottom: 24,
                     }}
                   >
-                    <Icon size={24} color="#059669" />
+                    <Icon size={24} color="#ea580c" />
                   </div>
                   <h3
                     style={{
@@ -988,7 +975,7 @@ export default function Landing() {
                       display: "flex",
                       alignItems: "center",
                       gap: 4,
-                      color: "#059669",
+                      color: "#ea580c",
                       fontSize: 14,
                       fontWeight: 700,
                     }}
@@ -1017,7 +1004,7 @@ export default function Landing() {
                 style={{
                   fontSize: 14,
                   fontWeight: 700,
-                  color: "#059669",
+                  color: "#ea580c",
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
                   marginBottom: 12,
@@ -1325,13 +1312,13 @@ export default function Landing() {
                 style={{
                   fontSize: 14,
                   fontWeight: 700,
-                  color: "#10b981",
+                  color: "#f97316",
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
                   marginBottom: 12,
                 }}
               >
-                Why Apex Bank
+                Why MidFirst Bank
               </p>
               <h2
                 style={{
@@ -1369,14 +1356,14 @@ export default function Landing() {
                       width: 56,
                       height: 56,
                       borderRadius: 16,
-                      background: "rgba(16,185,129,0.1)",
+                      background: "rgba(234, 88, 12, 0.1)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       marginBottom: 24,
                     }}
                   >
-                    <Icon size={24} color="#10b981" />
+                    <Icon size={24} color="#f97316" />
                   </div>
                   <h3
                     style={{
@@ -1412,11 +1399,11 @@ export default function Landing() {
             style={{
               maxWidth: 1000,
               margin: "0 auto",
-              background: "linear-gradient(135deg, #059669, #047857)",
+              background: "linear-gradient(135deg, #ea580c, #c2410c)",
               borderRadius: 32,
               padding: "clamp(40px, 8vw, 80px) 24px",
               textAlign: "center",
-              boxShadow: "0 24px 48px rgba(5, 150, 105, 0.2)",
+              boxShadow: "0 24px 48px rgba(234, 88, 12, 0.2)",
             }}
           >
             <h2
@@ -1433,14 +1420,14 @@ export default function Landing() {
             <p
               style={{
                 fontSize: 18,
-                color: "#d1fae5",
+                color: "#ffedd5",
                 lineHeight: 1.6,
                 marginBottom: 40,
                 maxWidth: 500,
                 margin: "0 auto 40px",
               }}
             >
-              Join over 50,000 customers already banking smarter with Apex. Open
+              Join over 50,000 customers already banking smarter with MidFirst. Open
               your free account in minutes.
             </p>
             <button
@@ -1453,7 +1440,7 @@ export default function Landing() {
                 borderRadius: 99,
                 fontSize: 18,
                 fontWeight: 800,
-                color: "#059669",
+                color: "#ea580c",
                 background: "#fff",
                 border: "none",
                 cursor: "pointer",
@@ -1500,23 +1487,11 @@ export default function Landing() {
                   marginBottom: 20,
                 }}
               >
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 10,
-                    background: "linear-gradient(135deg,#059669,#10b981)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Leaf size={18} color="#fff" fill="#fff" />
-                </div>
+                <img src="/logo.png" alt="MidFirst Bank Logo" className="h-6 w-auto"/>
                 <span
                   style={{ fontSize: 20, fontWeight: 800, color: "#0f172a" }}
                 >
-                  Apex Bank
+                  MidFirst Bank
                 </span>
               </div>
               <p
@@ -1557,7 +1532,7 @@ export default function Landing() {
                       cursor: "pointer",
                       fontWeight: 500,
                     }}
-                    onMouseEnter={(e) => (e.target.style.color = "#059669")}
+                    onMouseEnter={(e) => (e.target.style.color = "#ea580c")}
                     onMouseLeave={(e) => (e.target.style.color = "#64748b")}
                   >
                     {l}
@@ -1594,7 +1569,7 @@ export default function Landing() {
                     cursor: "pointer",
                     fontWeight: 500,
                   }}
-                  onMouseEnter={(e) => (e.target.style.color = "#059669")}
+                  onMouseEnter={(e) => (e.target.style.color = "#ea580c")}
                   onMouseLeave={(e) => (e.target.style.color = "#64748b")}
                 >
                   {l}
@@ -1617,7 +1592,7 @@ export default function Landing() {
               </p>
               {[
                 { icon: Phone, text: "+1 (800) 123-4567" },
-                { icon: Mail, text: "support@apexbank.io" },
+                { icon: Mail, text: "support@midfirst.io" },
                 { icon: MapPin, text: "350 Fifth Ave, New York" },
               ].map(({ icon: Icon, text }) => (
                 <div
@@ -1629,7 +1604,7 @@ export default function Landing() {
                     marginBottom: 16,
                   }}
                 >
-                  <Icon size={16} color="#059669" />
+                  <Icon size={16} color="#ea580c" />
                   <p
                     style={{ fontSize: 15, color: "#64748b", fontWeight: 500 }}
                   >
@@ -1653,7 +1628,7 @@ export default function Landing() {
             }}
           >
             <p style={{ fontSize: 14, color: "#94a3b8", fontWeight: 500 }}>
-              © {new Date().getFullYear()} Apex Bank. All rights reserved.
+              © {new Date().getFullYear()} MidFirst Bank. All rights reserved.
               Member FDIC
             </p>
             <p style={{ fontSize: 14, color: "#94a3b8", fontWeight: 500 }}>

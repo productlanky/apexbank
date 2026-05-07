@@ -29,7 +29,8 @@ export default function Shell() {
   const currentPath = location.pathname.split("/").pop() || "dashboard";
   const SidebarComponent = SidebarLight;
 
-  const mobileActiveColor = "#059669";
+  // Updated to MidFirst Brand Orange
+  const mobileActiveColor = "#ea580c";
   const mobileInactiveColor = "#94a3b8";
 
   const firstName = userProfile?.firstName || "User";
@@ -56,7 +57,7 @@ export default function Shell() {
     }
   };
 
-  // Helper to get alert styles based on type
+  // Helper to get alert styles based on type (Keeping semantic colors for alerts)
   const getAlertStyle = (type) => {
     switch (type) {
       case 'danger': return { icon: AlertCircle, color: '#dc2626', bg: '#fef2f2', border: '#fecaca' };
@@ -93,10 +94,10 @@ export default function Shell() {
               className="md:hidden"
               style={{
                 width: 44, height: 44, borderRadius: "50%",
-                background: "linear-gradient(135deg, #1e40af, #3b82f6)",
+                background: "linear-gradient(135deg, #ea580c, #f97316)", // Brand Orange
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 16, fontWeight: 700, color: "#fff",
-                boxShadow: "0 4px 12px rgba(59, 130, 246, 0.25)",
+                boxShadow: "0 4px 12px rgba(234, 88, 12, 0.25)", // Brand Orange Shadow
               }}
             >
               {initials}
@@ -166,12 +167,12 @@ export default function Shell() {
                 <div
                   style={{
                     width: 48, height: 48, borderRadius: 16, marginBottom: -8, marginTop: -20, 
-                    background: active ? "linear-gradient(135deg, #059669, #10b981)" : "#f1f5f9",
+                    background: active ? "linear-gradient(135deg, #ea580c, #f97316)" : "#f1f5f9", // Brand Orange
                     border: "4px solid #ffffff", display: "flex", alignItems: "center", justifyContent: "center",
-                    boxShadow: active ? "0 8px 20px rgba(16,185,129,0.35)" : "none", transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    boxShadow: active ? "0 8px 20px rgba(234, 88, 12, 0.35)" : "none", transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 >
-                  <Icon size={20} color={active ? "#fff" : "#059669"} strokeWidth={2.5} />
+                  <Icon size={20} color={active ? "#fff" : "#ea580c"} strokeWidth={2.5} />
                 </div>
               ) : (
                 <Icon size={22} strokeWidth={active ? 2.5 : 2} color={active ? mobileActiveColor : mobileInactiveColor} />
@@ -275,7 +276,7 @@ export default function Shell() {
                     onClick={handleMarkAllAsRead}
                     style={{ width: "100%", padding: "14px", background: "#f8fafc", color: "#0f172a", border: "1px solid #e2e8f0", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}
                   >
-                    <CheckCircle2 size={18} color="#059669" />
+                    <CheckCircle2 size={18} color="#ea580c" />
                     Mark all as read
                   </button>
                 </div>

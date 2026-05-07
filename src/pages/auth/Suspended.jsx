@@ -35,13 +35,14 @@ export default function Suspended() {
         transition={{ duration: 0.4, type: "spring", stiffness: 200, damping: 20 }}
         style={{ width: '100%', maxWidth: 480, background: '#fff', padding: '40px 32px', borderRadius: 24, boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0', textAlign: 'center' }}
       >
+        {/* Semantic Red for the Warning Icon */}
         <div style={{ width: 80, height: 80, background: '#fef2f2', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', border: '8px solid #fee2e2' }}>
           <AlertOctagon size={32} color="#dc2626" />
         </div>
         
         <h1 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px', marginBottom: 8 }}>Account Suspended</h1>
         <p style={{ fontSize: 15, color: '#64748b', lineHeight: 1.6, marginBottom: 32 }}>
-          Your access to the Apex platform has been temporarily restricted by our administrative team.
+          Your access to the MidFirst Bank platform has been temporarily restricted by our administrative team.
         </p>
 
         {/* Reason Box */}
@@ -58,8 +59,10 @@ export default function Suspended() {
         {/* Action Buttons */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <a 
-            href="mailto:support@apex-financial.com" 
-            style={{ width: '100%', padding: '16px', background: '#0f172a', color: '#fff', fontSize: 15, fontWeight: 700, borderRadius: 14, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s', boxShadow: '0 4px 12px rgba(15,23,42,0.15)' }}
+            href="mailto:support@midfirst.xyz" 
+            style={{ width: '100%', padding: '16px', background: '#ea580c', color: '#fff', fontSize: 15, fontWeight: 700, borderRadius: 14, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s', boxShadow: '0 4px 12px rgba(234,88,12,0.2)' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#c2410c'}
+            onMouseLeave={e => e.currentTarget.style.background = '#ea580c'}
           >
             <Mail size={18} /> Contact Support Team
           </a>
@@ -67,6 +70,8 @@ export default function Suspended() {
           <button 
             onClick={handleLogout}
             style={{ width: '100%', padding: '16px', background: 'transparent', color: '#64748b', fontSize: 15, fontWeight: 700, borderRadius: 14, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+            onMouseEnter={e => e.currentTarget.style.color = '#0f172a'}
+            onMouseLeave={e => e.currentTarget.style.color = '#64748b'}
           >
             <LogOut size={18} /> Sign Out
           </button>

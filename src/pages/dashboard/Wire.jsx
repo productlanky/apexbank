@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Zap, ArrowRight, Check, ChevronDown,
-  RotateCcw, Delete, ShieldCheck, AlertCircle, Smartphone, Building, Loader2
+  Building2, Zap, ArrowRight, Check, ArrowDownUp,
+  RotateCcw, Delete, ShieldCheck, AlertCircle, Smartphone, Building, Loader2,
+  ChevronDown
 } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
@@ -46,7 +47,7 @@ export default function WireTransfer({ onNav }) {
   const [otpError, setOtpError] = useState(false);
   const [otpCode, setOtpCode] = useState("");
   const [countdown, setCountdown] = useState(0);
-  const [txId] = useState(() => "WR" + Math.random().toString(36).slice(2, 10).toUpperCase());
+  const [txId] = useState(() => "MDF" + Math.random().toString(36).slice(2, 10).toUpperCase());
   const bankRef = useRef(null);
 
   // --- DYNAMIC FEE STATE ---
@@ -156,10 +157,11 @@ export default function WireTransfer({ onNav }) {
     setOtp(""); setOtpError(false); setIsVerifyingOtp(false); setCurrency("USD");
   }
 
+  // FIXED THIS RENDER BLOCK
   if (step === 3)
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "80vh", padding: "40px 24px" }}>
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 20 }} style={{ width: 88, height: 88, borderRadius: "50%", background: "linear-gradient(135deg, #059669, #10b981)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 16px rgba(16,185,129,0.1)", marginBottom: 28 }}>
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 20 }} style={{ width: 88, height: 88, borderRadius: "50%", background: "linear-gradient(135deg, #ea580c, #f97316)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 16px rgba(234, 88, 12, 0.1)", marginBottom: 28 }}>
           <Zap size={44} color="#fff" strokeWidth={2.5} />
         </motion.div>
         <p style={{ fontSize: 28, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.5px", marginBottom: 8, textAlign: "center" }}>Wire Initiated</p>
@@ -186,7 +188,7 @@ export default function WireTransfer({ onNav }) {
             <RotateCcw size={18} /> New Wire
           </button>
           {onNav && (
-            <button onClick={() => onNav("dashboard")} style={{ flex: 1, padding: "16px", fontSize: 15, fontWeight: 700, color: "#fff", background: "#059669", borderRadius: 14, border: "none", cursor: "pointer", transition: "background 0.2s" }}>
+            <button onClick={() => onNav("dashboard")} style={{ flex: 1, padding: "16px", fontSize: 15, fontWeight: 700, color: "#fff", background: "#ea580c", borderRadius: 14, border: "none", cursor: "pointer", transition: "background 0.2s" }}>
               Dashboard
             </button>
           )}
@@ -199,7 +201,7 @@ export default function WireTransfer({ onNav }) {
       <div style={{ padding: "24px clamp(20px, 4vw, 32px)", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
           <div style={{ width: 36, height: 36, borderRadius: 10, background: "#0f172a", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Zap size={20} color="#38bdf8" />
+            <Zap size={20} color="#ea580c" />
           </div>
           <h1 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.5px" }}>Wire Transfer</h1>
         </div>
@@ -226,10 +228,10 @@ export default function WireTransfer({ onNav }) {
             const active = step === i;
             return (
               <div key={`step-indicator-${s}`} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, zIndex: 1, width: 60 }}>
-                <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: done ? "#059669" : active ? "#0f172a" : "#fff", border: `2px solid ${done ? "#059669" : active ? "#0f172a" : "#cbd5e1"}`, fontSize: 13, fontWeight: 700, color: done || active ? "#fff" : "#94a3b8", transition: "all 0.3s ease" }}>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: done ? "#ea580c" : active ? "#0f172a" : "#fff", border: `2px solid ${done ? "#ea580c" : active ? "#0f172a" : "#cbd5e1"}`, fontSize: 13, fontWeight: 700, color: done || active ? "#fff" : "#94a3b8", transition: "all 0.3s ease" }}>
                   {done ? <Check size={16} strokeWidth={3} /> : i + 1}
                 </div>
-                <span style={{ fontSize: 11, fontWeight: 600, color: active ? "#0f172a" : done ? "#059669" : "#94a3b8" }}>{s}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: active ? "#0f172a" : done ? "#ea580c" : "#94a3b8" }}>{s}</span>
               </div>
             );
           })}
@@ -257,7 +259,7 @@ export default function WireTransfer({ onNav }) {
                           </div>
                           <div style={{ maxHeight: 240, overflowY: "auto" }}>
                             {filteredBanks.map((b) => (
-                              <button key={`bank-${b}`} onClick={() => { setBankName(b); setShowBanks(false); }} style={{ width: "100%", textAlign: "left", padding: "14px 16px", fontSize: 14, fontWeight: 500, color: bankName === b ? "#059669" : "#334155", background: bankName === b ? "#ecfdf5" : "#fff", cursor: "pointer", border: "none" }}>{b}</button>
+                              <button key={`bank-${b}`} onClick={() => { setBankName(b); setShowBanks(false); }} style={{ width: "100%", textAlign: "left", padding: "14px 16px", fontSize: 14, fontWeight: 500, color: bankName === b ? "#ea580c" : "#334155", background: bankName === b ? "#fff7ed" : "#fff", cursor: "pointer", border: "none" }}>{b}</button>
                             ))}
                           </div>
                         </motion.div>
@@ -317,7 +319,7 @@ export default function WireTransfer({ onNav }) {
                 <div style={{ borderRadius: 24, background: "#fff", border: "1px solid #e2e8f0", overflow: "hidden", marginBottom: 24, boxShadow: "0 10px 25px -5px rgba(0,0,0,0.05)" }}>
                   <div style={{ padding: "40px 24px", background: "linear-gradient(135deg, #0a0f1c, #1e293b)", textAlign: "center", position: "relative", overflow: "hidden" }}>
                     <Zap size={140} color="rgba(255,255,255,0.03)" style={{ position: "absolute", right: -20, bottom: -20, transform: "rotate(-15deg)" }} />
-                    <p style={{ fontSize: 14, fontWeight: 600, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 12, position: "relative" }}>Outgoing Wire Transfer</p>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 12, position: "relative" }}>Outgoing Wire Transfer</p>
                     <p style={{ fontSize: 48, fontWeight: 800, color: "#fff", letterSpacing: "-1.5px", position: "relative" }}>{fmt(num)}</p>
                     <p style={{ fontSize: 13, color: "#94a3b8", marginTop: 8, position: "relative" }}>+ {fmt(wireFee)} flat wire fee</p>
                   </div>
@@ -347,7 +349,7 @@ export default function WireTransfer({ onNav }) {
 
                 <div style={{ display: "flex", gap: 12 }}>
                   <button disabled={isGeneratingOtp} onClick={() => setStep(0)} style={{ padding: "18px 24px", fontSize: 15, fontWeight: 700, color: "#475569", background: "#f1f5f9", borderRadius: 16, border: "none", cursor: "pointer" }}>Edit</button>
-                  <button disabled={isGeneratingOtp} onClick={generateAndSendOtp} style={{ flex: 1, padding: "18px", fontSize: 16, fontWeight: 700, color: "#fff", background: "#059669", borderRadius: 16, border: "none", cursor: isGeneratingOtp ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 8px 20px rgba(5,150,105,0.2)" }}>
+                  <button disabled={isGeneratingOtp} onClick={generateAndSendOtp} style={{ flex: 1, padding: "18px", fontSize: 16, fontWeight: 700, color: "#fff", background: "#ea580c", borderRadius: 16, border: "none", cursor: isGeneratingOtp ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 8px 20px rgba(234, 88, 12, 0.2)" }}>
                     {isGeneratingOtp ? <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}><Loader2 size={18} /></motion.div> : <ShieldCheck size={18} />}
                     {isGeneratingOtp ? "Securing..." : "Authenticate Wire"}
                   </button>
@@ -403,7 +405,7 @@ export default function WireTransfer({ onNav }) {
                             Resend code in <span style={{ color: "#0f172a", fontWeight: 700 }}>00:{countdown.toString().padStart(2, "0")}</span>
                           </p>
                         ) : (
-                          <button onClick={generateAndSendOtp} disabled={isGeneratingOtp} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "#059669", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                          <button onClick={generateAndSendOtp} disabled={isGeneratingOtp} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "#ea580c", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
                             {isGeneratingOtp ? <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}><Loader2 size={16} /></motion.div> : <RotateCcw size={16} />}
                             Resend Code
                           </button>
@@ -431,7 +433,7 @@ function Field({ label, value, onChange, placeholder, mono, hint }) {
       <input
         value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
         style={{ width: "100%", padding: "16px", borderRadius: 14, background: "#fff", border: "1px solid #e2e8f0", outline: "none", color: "#0f172a", fontSize: 15, fontWeight: 500, fontFamily: mono ? "monospace" : "inherit", letterSpacing: mono ? "0.1em" : "inherit", transition: "border 0.2s", boxShadow: "0 1px 2px rgba(0,0,0,0.02)" }}
-        onFocus={(e) => (e.target.style.borderColor = "#0f172a")}
+        onFocus={(e) => (e.target.style.borderColor = "#ea580c")}
         onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
       />
       {hint && <p style={{ fontSize: 12, color: "#f59e0b", marginTop: 6, fontWeight: 500 }}>{hint}</p>}

@@ -14,7 +14,7 @@ const ADMIN_LINKS = [
   { path: '/controls/dashboard', icon: LayoutDashboard, label: 'Overview' },
   { path: '/controls/users',     icon: Users,           label: 'Manage Users' },
   { path: '/controls/create',    icon: Activity,        label: 'Create User' },
-    { path: '/controls/support',    icon: Activity,        label: 'Manage Support' },
+  { path: '/controls/support',   icon: Activity,        label: 'Manage Support' },
   { path: '/controls/settings',  icon: Settings,        label: 'Settings' },
 ];
 
@@ -53,12 +53,12 @@ export default function AdminShell() {
     <div className='w-full' style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '24px 20px' }}>
       {/* Admin Branding */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 48, paddingLeft: 8 }}>
-        <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #ef4444, #dc2626)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)' }}>
+        <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #f97316, #ea580c)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(234, 88, 12, 0.3)' }}>
           <ShieldAlert size={20} color="#fff" />
         </div>
         <div>
-          <span style={{ display: 'block', fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: '-0.5px', lineHeight: 1.2 }}>Apex</span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Admin Portal</span>
+          <span style={{ display: 'block', fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: '-0.5px', lineHeight: 1.2 }}>MidFirst</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: '#ea580c', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Admin Portal</span>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export default function AdminShell() {
                 onMouseEnter={e => { if(!isActive) { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#fff'; }}}
                 onMouseLeave={e => { if(!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#94a3b8'; }}}
               >
-                <Icon size={20} color={isActive ? '#ef4444' : 'currentColor'} />
+                <Icon size={20} color={isActive ? '#ea580c' : 'currentColor'} />
                 <span style={{ fontSize: 15, fontWeight: 600 }}>{label}</span>
               </div>
             </NavLink>
@@ -94,7 +94,7 @@ export default function AdminShell() {
         <button 
           onClick={handleLogout} // Hooked up the Firebase logout here
           style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: 14, background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', transition: 'all 0.2s' }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; e.currentTarget.style.color = '#ef4444'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(234,88,12,0.1)'; e.currentTarget.style.color = '#ea580c'; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#94a3b8'; }}
         >
           <LogOut size={20} />
@@ -115,10 +115,10 @@ export default function AdminShell() {
       {/* --- MOBILE HEADER --- */}
       <div className="md:hidden" style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 72, background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', zIndex: 40, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ShieldAlert size={18} color="#fff" />
           </div>
-          <span style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>Apex Admin</span>
+          <span style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>MidFirst Admin</span>
         </div>
         <button onClick={() => setIsMobileMenuOpen(true)} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
           <Menu size={28} />

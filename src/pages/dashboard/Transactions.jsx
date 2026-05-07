@@ -26,14 +26,16 @@ const itemVariants = {
 // Dynamic Styling Helpers
 const getStatusStyles = (status) => {
   const s = (status || 'pending').toLowerCase();
+  // Keeping semantic colors for status
   if (s === 'completed') return { bg: '#dcfce7', text: '#16a34a', label: 'Completed' };
   if (s === 'failed') return { bg: '#fee2e2', text: '#dc2626', label: 'Failed' };
   return { bg: '#fef9c3', text: '#ca8a04', label: 'Pending' };
 };
 
 const getTypeStyles = (type) => {
+  // Keeping semantic Green/Red for Credit/Debit, using Brand Orange for Exchange
   if (type === 'credit') return { bg: '#ecfdf5', text: '#059669', label: 'CR', sign: '+' };
-  if (type === 'exchange') return { bg: '#eff6ff', text: '#3b82f6', label: 'EX', sign: '' };
+  if (type === 'exchange') return { bg: '#fff7ed', text: '#ea580c', label: 'EX', sign: '' }; // MidFirst Orange
   return { bg: '#fef2f2', text: '#dc2626', label: 'DR', sign: '-' }; // default debit
 };
 
@@ -43,6 +45,7 @@ export default function Transactions() {
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
+  const [searchFocused, setSearchFocused] = useState(false); // Track focus for brand styling
 
   // Filter logic
   const list = transactions.filter(t => {
@@ -84,11 +87,19 @@ export default function Transactions() {
       {/* 3. Search & Filters */}
       <motion.div variants={itemVariants} style={{ flexShrink: 0, display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
         
-        {/* Search Bar */}
-        <div style={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', borderRadius: 14, background: '#fff', border: '1px solid #e2e8f0', boxShadow: '0 2px 4px rgba(0,0,0,0.02)', transition: 'border 0.2s' }}>
-          <Search size={18} color="#94a3b8" />
+        {/* Search Bar with Brand Focus State */}
+        <div style={{ 
+          flex: 1, minWidth: 220, display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', 
+          borderRadius: 14, background: '#fff', 
+          border: `1px solid ${searchFocused ? '#ea580c' : '#e2e8f0'}`, 
+          boxShadow: searchFocused ? '0 0 0 3px rgba(234, 88, 12, 0.1)' : '0 2px 4px rgba(0,0,0,0.02)', 
+          transition: 'all 0.2s' 
+        }}>
+          <Search size={18} color={searchFocused ? '#ea580c' : '#94a3b8'} style={{ transition: 'color 0.2s' }} />
           <input 
             value={search} onChange={e => setSearch(e.target.value)} 
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
             placeholder="Search name or category…"
             style={{ flex: 1, fontSize: 14, fontWeight: 500, color: '#0f172a', background: 'transparent', border: 'none', outline: 'none' }} 
           />
@@ -102,8 +113,8 @@ export default function Transactions() {
               <button 
                 key={f} onClick={() => setFilter(f)} 
                 style={{
-                  position: 'relative', padding: '10px 16px', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer', border: 'none', background: 'transparent',
-                  color: isActive ? '#0f172a' : '#64748b', transition: 'color 0.2s', zIndex: 1, whiteSpace: 'nowrap'
+                  position: 'relative', padding: '10px 16px', borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer', border: 'none', background: 'transparent',
+                  color: isActive ? '#ea580c' : '#64748b', transition: 'color 0.2s', zIndex: 1, whiteSpace: 'nowrap'
                 }}
               >
                 {isActive && (

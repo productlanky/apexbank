@@ -47,7 +47,7 @@ export default function Send({ onNav }) {
   const [otpError, setOtpError] = useState(false);
   const [otpCode, setOtpCode] = useState("");
   const [countdown, setCountdown] = useState(0);
-  const [txId] = useState(() => "APX" + Math.random().toString(36).slice(2, 10).toUpperCase());
+  const [txId] = useState(() => "MDF" + Math.random().toString(36).slice(2, 10).toUpperCase());
   const bankRef = useRef(null);
 
   // --- DYNAMIC FEES STATE ---
@@ -172,7 +172,7 @@ export default function Send({ onNav }) {
   if (step === 4)
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "80vh", padding: "40px 24px" }}>
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 20 }} style={{ width: 88, height: 88, borderRadius: "50%", background: "linear-gradient(135deg, #059669, #10b981)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 16px rgba(16,185,129,0.1)", marginBottom: 28 }}>
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 20 }} style={{ width: 88, height: 88, borderRadius: "50%", background: "linear-gradient(135deg, #ea580c, #f97316)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 16px rgba(249,115,22,0.1)", marginBottom: 28 }}>
           <Check size={44} color="#fff" strokeWidth={3} />
         </motion.div>
         <p style={{ fontSize: 28, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.5px", marginBottom: 8, textAlign: "center" }}>Transfer Initiated</p>
@@ -199,7 +199,7 @@ export default function Send({ onNav }) {
             <RotateCcw size={18} /> New Transfer
           </button>
           {onNav && (
-            <button onClick={() => onNav("dashboard")} style={{ flex: 1, padding: "16px", fontSize: 15, fontWeight: 700, color: "#fff", background: "#059669", borderRadius: 14, border: "none", cursor: "pointer", transition: "background 0.2s" }}>
+            <button onClick={() => onNav("dashboard")} style={{ flex: 1, padding: "16px", fontSize: 15, fontWeight: 700, color: "#fff", background: "#ea580c", borderRadius: 14, border: "none", cursor: "pointer", transition: "background 0.2s" }}>
               Dashboard
             </button>
           )}
@@ -235,10 +235,10 @@ export default function Send({ onNav }) {
             const active = step === i;
             return (
               <div key={`step-indicator-${s}`} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, zIndex: 1, width: 60 }}>
-                <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: done ? "#059669" : active ? "#0f172a" : "#fff", border: `2px solid ${done ? "#059669" : active ? "#0f172a" : "#cbd5e1"}`, fontSize: 13, fontWeight: 700, color: done || active ? "#fff" : "#94a3b8", transition: "all 0.3s ease" }}>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: done ? "#ea580c" : active ? "#0f172a" : "#fff", border: `2px solid ${done ? "#ea580c" : active ? "#0f172a" : "#cbd5e1"}`, fontSize: 13, fontWeight: 700, color: done || active ? "#fff" : "#94a3b8", transition: "all 0.3s ease" }}>
                   {done ? <Check size={16} strokeWidth={3} /> : i + 1}
                 </div>
-                <span style={{ fontSize: 11, fontWeight: 600, color: active ? "#0f172a" : done ? "#059669" : "#94a3b8" }}>{s}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: active ? "#0f172a" : done ? "#ea580c" : "#94a3b8" }}>{s}</span>
               </div>
             );
           })}
@@ -253,19 +253,19 @@ export default function Send({ onNav }) {
                   {activeTransferTypes.map((t) => {
                     const isSelected = type === t.id;
                     return (
-                      <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} key={`transfer-type-${t.id}`} onClick={() => setType(t.id)} style={{ textAlign: "left", padding: "24px", borderRadius: 20, cursor: "pointer", background: isSelected ? "#ecfdf5" : "#fff", border: `2px solid ${isSelected ? "#10b981" : "#e2e8f0"}`, boxShadow: isSelected ? "0 4px 12px rgba(16,185,129,0.1)" : "0 2px 8px rgba(0,0,0,0.02)", transition: "background 0.2s, border 0.2s", position: "relative" }}>
-                        <div style={{ width: 48, height: 48, borderRadius: 14, background: isSelected ? "#10b981" : "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center", color: isSelected ? "#fff" : "#64748b", marginBottom: 16 }}>{t.icon}</div>
+                      <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} key={`transfer-type-${t.id}`} onClick={() => setType(t.id)} style={{ textAlign: "left", padding: "24px", borderRadius: 20, cursor: "pointer", background: isSelected ? "#fff7ed" : "#fff", border: `2px solid ${isSelected ? "#f97316" : "#e2e8f0"}`, boxShadow: isSelected ? "0 4px 12px rgba(249,115,22,0.1)" : "0 2px 8px rgba(0,0,0,0.02)", transition: "background 0.2s, border 0.2s", position: "relative" }}>
+                        <div style={{ width: 48, height: 48, borderRadius: 14, background: isSelected ? "#f97316" : "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center", color: isSelected ? "#fff" : "#64748b", marginBottom: 16 }}>{t.icon}</div>
                         <p style={{ fontSize: 16, fontWeight: 800, color: "#0f172a", marginBottom: 6 }}>{t.label}</p>
                         <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5, marginBottom: 16 }}>{t.desc}</p>
                         <div style={{ display: "flex", gap: 10 }}>
-                          <span style={{ fontSize: 12, fontWeight: 700, padding: "4px 10px", borderRadius: 8, background: isSelected ? "#dcfce7" : "#f1f5f9", color: isSelected ? "#059669" : "#475569" }}>{t.fee === 0 ? "Free" : `Fee: $${t.fee}`}</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, padding: "4px 10px", borderRadius: 8, background: isSelected ? "#ffedd5" : "#f1f5f9", color: isSelected ? "#ea580c" : "#475569" }}>{t.fee === 0 ? "Free" : `Fee: $${t.fee}`}</span>
                           <span style={{ fontSize: 12, fontWeight: 600, padding: "4px 10px", borderRadius: 8, background: "#f1f5f9", color: "#64748b" }}>{t.time}</span>
                         </div>
                       </motion.button>
                     );
                   })}
                 </div>
-                <button disabled={!type} onClick={() => setStep(1)} style={{ width: "100%", padding: "16px", fontSize: 16, fontWeight: 700, color: "#fff", background: type ? "#059669" : "#cbd5e1", borderRadius: 14, border: "none", cursor: type ? "pointer" : "not-allowed", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}>
+                <button disabled={!type} onClick={() => setStep(1)} style={{ width: "100%", padding: "16px", fontSize: 16, fontWeight: 700, color: "#fff", background: type ? "#ea580c" : "#cbd5e1", borderRadius: 14, border: "none", cursor: type ? "pointer" : "not-allowed", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}>
                   Continue <ArrowRight size={18} />
                 </button>
               </motion.div>
@@ -288,7 +288,7 @@ export default function Send({ onNav }) {
                           </div>
                           <div style={{ maxHeight: 240, overflowY: "auto" }}>
                             {filteredBanks.map((b) => (
-                              <button key={`bank-${b}`} onClick={() => { setBankName(b); setShowBanks(false); }} style={{ width: "100%", textAlign: "left", padding: "14px 16px", fontSize: 14, fontWeight: 500, color: bankName === b ? "#059669" : "#334155", background: bankName === b ? "#ecfdf5" : "#fff", cursor: "pointer", border: "none" }}>{b}</button>
+                              <button key={`bank-${b}`} onClick={() => { setBankName(b); setShowBanks(false); }} style={{ width: "100%", textAlign: "left", padding: "14px 16px", fontSize: 14, fontWeight: 500, color: bankName === b ? "#ea580c" : "#334155", background: bankName === b ? "#fff7ed" : "#fff", cursor: "pointer", border: "none" }}>{b}</button>
                             ))}
                           </div>
                         </motion.div>
@@ -330,7 +330,7 @@ export default function Send({ onNav }) {
                 </div>
                 <div style={{ marginTop: 32, display: "flex", gap: 12 }}>
                   <button onClick={() => setStep(0)} style={{ padding: "16px 24px", fontSize: 15, fontWeight: 700, color: "#475569", background: "#f1f5f9", borderRadius: 14, border: "none", cursor: "pointer" }}>Back</button>
-                  <button disabled={!canAdvance()} onClick={() => setStep(2)} style={{ flex: 1, padding: "16px", fontSize: 16, fontWeight: 700, color: "#fff", background: canAdvance() ? "#059669" : "#cbd5e1", borderRadius: 14, border: "none", cursor: canAdvance() ? "pointer" : "not-allowed", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}>Review Transfer <ArrowRight size={18} /></button>
+                  <button disabled={!canAdvance()} onClick={() => setStep(2)} style={{ flex: 1, padding: "16px", fontSize: 16, fontWeight: 700, color: "#fff", background: canAdvance() ? "#ea580c" : "#cbd5e1", borderRadius: 14, border: "none", cursor: canAdvance() ? "pointer" : "not-allowed", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}>Review Transfer <ArrowRight size={18} /></button>
                 </div>
               </motion.div>
             )}
@@ -354,7 +354,7 @@ export default function Send({ onNav }) {
                     ].map(([k, v]) => (
                       <div key={`review-${k}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #f1f5f9" }}>
                         <span style={{ fontSize: 14, color: "#64748b", fontWeight: 500 }}>{k}</span>
-                        <span style={{ fontSize: 15, fontWeight: 700, color: k === "Total Deducted" ? "#059669" : "#0f172a" }}>{v}</span>
+                        <span style={{ fontSize: 15, fontWeight: 700, color: k === "Total Deducted" ? "#ea580c" : "#0f172a" }}>{v}</span>
                       </div>
                     ))}
                   </div>
@@ -417,7 +417,7 @@ export default function Send({ onNav }) {
                             Resend code in <span style={{ color: "#0f172a", fontWeight: 700 }}>00:{countdown.toString().padStart(2, "0")}</span>
                           </p>
                         ) : (
-                          <button onClick={generateAndSendOtp} disabled={isGeneratingOtp} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "#059669", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                          <button onClick={generateAndSendOtp} disabled={isGeneratingOtp} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "#ea580c", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
                             {isGeneratingOtp ? <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}><Loader2 size={16} /></motion.div> : <RotateCcw size={16} />}
                             Resend Code
                           </button>
@@ -445,7 +445,7 @@ function Field({ label, value, onChange, placeholder, mono, hint }) {
       <input
         value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
         style={{ width: "100%", padding: "16px", borderRadius: 14, background: "#fff", border: "1px solid #e2e8f0", outline: "none", color: "#0f172a", fontSize: 15, fontWeight: 500, fontFamily: mono ? "monospace" : "inherit", letterSpacing: mono ? "0.1em" : "inherit", transition: "border 0.2s", boxShadow: "0 1px 2px rgba(0,0,0,0.02)" }}
-        onFocus={(e) => (e.target.style.borderColor = "#059669")}
+        onFocus={(e) => (e.target.style.borderColor = "#ea580c")}
         onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
       />
       {hint && <p style={{ fontSize: 12, color: "#f59e0b", marginTop: 6, fontWeight: 500 }}>{hint}</p>}

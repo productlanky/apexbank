@@ -132,8 +132,8 @@ export default function Cards() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(4px)', zIndex: 1000 }} onClick={() => !isIssuing && setShowModal(false)} />
             <motion.div className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} style={{background: '#fff', borderRadius: 24, padding: 32, width: '90%', maxWidth: 420, zIndex: 1001, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
               
-              <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#ecfdf5', border: '4px solid #dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                <CreditCard size={28} color="#059669" />
+              <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#fff7ed', border: '4px solid #ffedd5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                <CreditCard size={28} color="#ea580c" />
               </div>
 
               <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', marginBottom: 8, letterSpacing: '-0.5px' }}>Issue Virtual Card</h2>
@@ -159,7 +159,7 @@ export default function Cards() {
 
               <div style={{ display: 'flex', gap: 12 }}>
                 <button onClick={() => setShowModal(false)} disabled={isIssuing} style={{ flex: 1, padding: '16px', background: '#f1f5f9', color: '#475569', borderRadius: 14, fontSize: 15, fontWeight: 700, border: 'none', cursor: isIssuing ? 'not-allowed' : 'pointer', transition: 'background 0.2s' }}>Cancel</button>
-                <button onClick={handleConfirmIssuance} disabled={isIssuing} style={{ flex: 2, padding: '16px', background: '#059669', color: '#fff', borderRadius: 14, fontSize: 15, fontWeight: 700, border: 'none', cursor: isIssuing ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, boxShadow: '0 4px 12px rgba(5,150,105,0.2)' }}>
+                <button onClick={handleConfirmIssuance} disabled={isIssuing} style={{ flex: 2, padding: '16px', background: '#ea580c', color: '#fff', borderRadius: 14, fontSize: 15, fontWeight: 700, border: 'none', cursor: isIssuing ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, boxShadow: '0 4px 12px rgba(234, 88, 12, 0.2)' }}>
                   {isIssuing ? (
                     <><Loader2 size={18} className="animate-spin" /> {issueStep}</>
                   ) : (
@@ -179,7 +179,7 @@ export default function Cards() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <CreditCard size={20} color="#34d399" />
+                <CreditCard size={20} color="#fb923c" />
               </div>
               <h1 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>Cards</h1>
             </div>
@@ -308,18 +308,18 @@ function VirtualCard({ card, userProfile, onToggleLock }) {
             position: 'absolute', inset: 0, borderRadius: 24,
             background: card.isLocked 
               ? 'linear-gradient(135deg, #1e293b, #0f172a)' 
-              : 'linear-gradient(135deg, #022c22 0%, #064e3b 45%, #065f46 100%)',
+              : 'linear-gradient(135deg, #431407 0%, #7c2d12 45%, #9a3412 100%)',
             padding: 'clamp(20px,4vw,32px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-            boxShadow: card.isLocked ? '0 10px 30px rgba(0,0,0,0.1)' : '0 20px 40px rgba(5,150,105,0.2)',
+            boxShadow: card.isLocked ? '0 10px 30px rgba(0,0,0,0.1)' : '0 20px 40px rgba(234,88,12,0.2)',
             transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
             backfaceVisibility: 'hidden', transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)', overflow: 'hidden',
           }}>
-            <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52,211,153,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(251,146,60,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
             
             <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Leaf size={16} color="#34d399" fill="#34d399" />
-                <span style={{ fontSize: 16, fontWeight: 800, color: '#34d399', letterSpacing: '0.05em' }}>APEX</span>
+                <Leaf size={16} color="#fb923c" fill="#fb923c" />
+                <span style={{ fontSize: 16, fontWeight: 800, color: '#fb923c', letterSpacing: '0.05em' }}>MIDFIRST</span>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontSize: 16, fontWeight: 800, color: '#fff', letterSpacing: '0.05em', opacity: 0.9 }}>{card.brand}</p>
@@ -379,7 +379,7 @@ function VirtualCard({ card, userProfile, onToggleLock }) {
             disabled={card.isLocked}
           />
           <CardAction 
-            icon={copied ? <Check size={18} color="#059669"/> : <Copy size={18}/>} 
+            icon={copied ? <Check size={18} color="#ea580c"/> : <Copy size={18}/>} 
             label={copied ? 'Copied' : 'Copy'}  
             onClick={copyCardNumber} 
             active={copied} 
@@ -401,10 +401,10 @@ function VirtualCard({ card, userProfile, onToggleLock }) {
         <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 24, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
             <span style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>Monthly Limit</span>
-            <span style={{ fontSize: 14, fontWeight: 800, color: '#059669' }}>{fmt(card.spent)} / {fmt(card.limit)}</span>
+            <span style={{ fontSize: 14, fontWeight: 800, color: '#ea580c' }}>{fmt(card.spent)} / {fmt(card.limit)}</span>
           </div>
           <div style={{ height: 10, borderRadius: 99, background: '#f1f5f9', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${spentPct}%`, borderRadius: 99, background: spentPct > 80 ? '#ef4444' : '#059669', transition: 'width 1s cubic-bezier(.22,1,.36,1)' }} />
+            <div style={{ height: '100%', width: `${spentPct}%`, borderRadius: 99, background: spentPct > 80 ? '#ef4444' : '#ea580c', transition: 'width 1s cubic-bezier(.22,1,.36,1)' }} />
           </div>
           <p style={{ fontSize: 12, color: '#64748b', marginTop: 10, fontWeight: 500 }}>{(100-spentPct).toFixed(0)}% remaining this month</p>
         </div>
@@ -413,7 +413,7 @@ function VirtualCard({ card, userProfile, onToggleLock }) {
         <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 24, padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
           <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', marginBottom: 16 }}>Card Details</p>
           {[
-            ['Status', card.isLocked ? 'Locked' : 'Active', card.isLocked ? '#ef4444' : '#059669'],
+            ['Status', card.isLocked ? 'Locked' : 'Active', card.isLocked ? '#ef4444' : '#ea580c'],
             ['Network', card.brand, '#0f172a'],
             ['Type', card.type, '#475569'],
             ['Issued', new Date(card.createdAt).toLocaleDateString(), '#475569']
@@ -469,9 +469,9 @@ function CardAction({ icon, label, onClick, active, danger, disabled }) {
       disabled={disabled}
       style={{
         padding: '16px 12px', borderRadius: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-        background: disabled ? '#f1f5f9' : danger ? '#fef2f2' : active ? '#ecfdf5' : '#f8fafc',
-        border: `1px solid ${disabled ? '#e2e8f0' : danger ? '#fecaca' : active ? '#a7f3d0' : '#e2e8f0'}`,
-        color: disabled ? '#94a3b8' : danger ? '#dc2626' : active ? '#059669' : '#475569',
+        background: disabled ? '#f1f5f9' : danger ? '#fef2f2' : active ? '#fff7ed' : '#f8fafc',
+        border: `1px solid ${disabled ? '#e2e8f0' : danger ? '#fecaca' : active ? '#fed7aa' : '#e2e8f0'}`,
+        color: disabled ? '#94a3b8' : danger ? '#dc2626' : active ? '#ea580c' : '#475569',
         cursor: disabled ? 'not-allowed' : 'pointer', transition: 'all 0.2s',
         boxShadow: disabled ? 'none' : '0 2px 4px rgba(0,0,0,0.02)'
       }}

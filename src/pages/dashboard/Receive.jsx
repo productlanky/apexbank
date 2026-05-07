@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Copy, Check, Share2, Loader2, QrCode, Building2, Zap, ArrowDownToLine } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Copy, Check, Share2, Loader2, Building2, Zap, ArrowDownToLine } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 
 // --- NATIVE QR CODE GENERATOR ---
@@ -60,7 +60,7 @@ export default function Receive() {
   const acctNum = userProfile.accountNumber || '0000000000';
   // Generates e.g. @jane9182
   const userTag = `@${firstName.toLowerCase()}${acctNum.slice(-4)}`;
-  const routingNum = "021000021"; // Static Apex platform routing
+  const routingNum = "021000021"; // Static MidFirst platform routing
 
   return (
     <div style={{ minHeight: '100%', paddingBottom: 100, fontFamily: "'Inter', sans-serif" }}>
@@ -69,7 +69,7 @@ export default function Receive() {
       <div style={{ padding: '24px clamp(20px, 4vw, 32px)', marginBottom: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
           <div style={{ width: 36, height: 36, borderRadius: 10, background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ArrowDownToLine size={20} color="#34d399" />
+            <ArrowDownToLine size={20} color="#ea580c" />
           </div>
           <h1 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>Receive Money</h1>
         </div>
@@ -90,22 +90,22 @@ export default function Receive() {
                 onClick={() => setTab('tag')} 
                 style={{ flex: 1, padding: '10px', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', border: 'none', background: tab === 'tag' ? '#fff' : 'transparent', color: tab === 'tag' ? '#0f172a' : '#64748b', boxShadow: tab === 'tag' ? '0 2px 4px rgba(0,0,0,0.04)' : 'none', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
               >
-                <Zap size={16} color={tab === 'tag' ? '#059669' : '#94a3b8'} /> Apex Tag
+                <Zap size={16} color={tab === 'tag' ? '#ea580c' : '#94a3b8'} /> MidFirst Tag
               </button>
               <button 
                 onClick={() => setTab('account')} 
                 style={{ flex: 1, padding: '10px', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', border: 'none', background: tab === 'account' ? '#fff' : 'transparent', color: tab === 'account' ? '#0f172a' : '#64748b', boxShadow: tab === 'account' ? '0 2px 4px rgba(0,0,0,0.04)' : 'none', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
               >
-                <Building2 size={16} color={tab === 'account' ? '#3b82f6' : '#94a3b8'} /> Bank Details
+                <Building2 size={16} color={tab === 'account' ? '#f97316' : '#94a3b8'} /> Bank Details
               </button>
             </div>
 
             {/* QR Display */}
             <div style={{ position: 'relative', padding: 20, borderRadius: 24, background: '#f8fafc', border: '1px solid #e2e8f0', marginBottom: 24, width: 220, height: 220 }}>
-              <QR data={tab === 'tag' ? userTag : acctNum} color={tab === 'tag' ? '#059669' : '#0f172a'} />
+              <QR data={tab === 'tag' ? userTag : acctNum} color={tab === 'tag' ? '#ea580c' : '#0f172a'} />
               {/* Corner Accents */}
               {[['top','left'],['top','right'],['bottom','left'],['bottom','right']].map(([v,h], i) => (
-                <div key={i} style={{ position: 'absolute', [v]: -1, [h]: -1, width: 24, height: 24, borderColor: tab === 'tag' ? '#10b981' : '#0f172a', borderStyle: 'solid', borderTopWidth: v==='top'?3:0, borderBottomWidth: v==='bottom'?3:0, borderLeftWidth: h==='left'?3:0, borderRightWidth: h==='right'?3:0, borderRadius: v==='top'&&h==='left'?'20px 0 0 0':v==='top'&&h==='right'?'0 20px 0 0':v==='bottom'&&h==='left'?'0 0 0 20px':'0 0 20px 0', transition: 'border-color 0.3s' }} />
+                <div key={i} style={{ position: 'absolute', [v]: -1, [h]: -1, width: 24, height: 24, borderColor: tab === 'tag' ? '#ea580c' : '#0f172a', borderStyle: 'solid', borderTopWidth: v==='top'?3:0, borderBottomWidth: v==='bottom'?3:0, borderLeftWidth: h==='left'?3:0, borderRightWidth: h==='right'?3:0, borderRadius: v==='top'&&h==='left'?'20px 0 0 0':v==='top'&&h==='right'?'0 20px 0 0':v==='bottom'&&h==='left'?'0 0 0 20px':'0 0 20px 0', transition: 'border-color 0.3s' }} />
               ))}
             </div>
 
@@ -113,7 +113,7 @@ export default function Receive() {
               {tab === 'tag' ? userTag : 'Bank Transfer'}
             </p>
             <p style={{ fontSize: 14, color: '#64748b', textAlign: 'center', marginBottom: 24, maxWidth: 220 }}>
-              {tab === 'tag' ? 'Scan to pay instantly via Apex.' : 'Scan for routing and account info.'}
+              {tab === 'tag' ? 'Scan to pay instantly via MidFirst.' : 'Scan for routing and account info.'}
             </p>
 
             {/* Action Buttons */}
@@ -137,32 +137,32 @@ export default function Receive() {
             <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.1 }} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 24, padding: '28px', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Zap size={18} color="#059669" />
-                  <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a' }}>Apex Tag</p>
+                  <Zap size={18} color="#ea580c" />
+                  <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a' }}>MidFirst Tag</p>
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#059669', background: '#ecfdf5', padding: '4px 10px', borderRadius: 8 }}>Instant</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#ea580c', background: '#fff7ed', padding: '4px 10px', borderRadius: 8 }}>Instant</span>
               </div>
               
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', borderRadius: 16, background: '#f8fafc', border: '1px solid #e2e8f0' }}>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: 12, color: '#64748b', fontWeight: 600, marginBottom: 4 }}>Your Tag</p>
-                  <p style={{ fontSize: 18, fontWeight: 800, color: '#059669', letterSpacing: '-0.5px' }}>{userTag}</p>
+                  <p style={{ fontSize: 18, fontWeight: 800, color: '#ea580c', letterSpacing: '-0.5px' }}>{userTag}</p>
                 </div>
-                <button onClick={() => copy(userTag, 'tag2')} style={{ width: 40, height: 40, borderRadius: 10, background: copied === 'tag2' ? '#059669' : '#fff', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
+                <button onClick={() => copy(userTag, 'tag2')} style={{ width: 40, height: 40, borderRadius: 10, background: copied === 'tag2' ? '#ea580c' : '#fff', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
                   {copied === 'tag2' ? <Check size={18} color="#fff" /> : <Copy size={18} color="#64748b" />}
                 </button>
               </div>
-              <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 12, fontWeight: 500 }}>Works within the Apex network. The recipient must have an active account.</p>
+              <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 12, fontWeight: 500 }}>Works within the MidFirst network. The recipient must have an active account.</p>
             </motion.div>
 
             {/* Bank Details */}
             <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.2 }} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 24, padding: '28px', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Building2 size={18} color="#3b82f6" />
+                  <Building2 size={18} color="#f97316" />
                   <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a' }}>Bank Transfer</p>
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#3b82f6', background: '#eff6ff', padding: '4px 10px', borderRadius: 8 }}>ACH / Wire</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#ea580c', background: '#fff7ed', padding: '4px 10px', borderRadius: 8 }}>ACH / Wire</span>
               </div>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -181,7 +181,7 @@ export default function Receive() {
                       {copyKey && (
                         <button 
                           onClick={() => copy(value, copyKey)} 
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: copied === copyKey ? '#059669' : '#94a3b8', transition: 'color 0.2s' }}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: copied === copyKey ? '#ea580c' : '#94a3b8', transition: 'color 0.2s' }}
                         >
                           {copied === copyKey ? <Check size={16} /> : <Copy size={16} />}
                         </button>
@@ -192,7 +192,7 @@ export default function Receive() {
               </div>
 
               <div style={{ marginTop: 20, padding: '16px', borderRadius: 16, background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', gap: 12 }}>
-                 <div style={{ width: 4, borderRadius: 4, background: '#3b82f6' }} />
+                 <div style={{ width: 4, borderRadius: 4, background: '#ea580c' }} />
                  <p style={{ fontSize: 13, color: '#475569', lineHeight: 1.6, fontWeight: 500 }}>
                    <strong style={{ color: '#0f172a' }}>ACH transfers</strong> arrive in 1–2 business days. <strong style={{ color: '#0f172a' }}>Wire transfers</strong> arrive same-day if initiated before 4:00 PM ET.
                  </p>
