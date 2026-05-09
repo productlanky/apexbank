@@ -4,7 +4,9 @@ import {
   Search, Edit3, X, Save, AlertCircle, ShieldAlert,
   CheckCircle2, DollarSign, UserX, Loader2, Mail,
   Activity, BellRing, Send, Info, AlertTriangle, PlusCircle,
-  ArrowDownRight, ArrowUpRight, CreditCard, Lock, Unlock
+  ArrowDownRight, ArrowUpRight, CreditCard, Lock, Unlock,
+  User, Calendar, Globe, MapPin, FileText, Check, XCircle,
+  ShieldCheck
 } from "lucide-react";
 import { collection, onSnapshot, doc, updateDoc, query, where, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../lib/firebase";
@@ -25,23 +27,23 @@ export default function ManageUsers() {
 
   // Drawer State
   const [selectedUser, setSelectedUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("overview"); // overview, cards, transactions, addTx, alerts
+  const [activeTab, setActiveTab] = useState("profile"); // profile, overview, cards, transactions, addTx, alerts
   
-  // Tab 1: Edit State (Overview)
+  // Tab 2: Edit State (Overview)
   const [editStatus, setEditStatus] = useState("active");
   const [suspendReason, setSuspendReason] = useState(""); 
   const [editBalances, setEditBalances] = useState({});
   const [isSaving, setIsSaving] = useState(false);
 
-  // Tab 3: User Transactions State (Bank Ledger)
+  // Tab 4: User Transactions State (Bank Ledger)
   const [userTxns, setUserTxns] = useState([]);
   const [isTxnsLoading, setIsTxnsLoading] = useState(false);
 
-  // Tab 5: Alert State
+  // Tab 6: Alert State
   const [alertConfig, setAlertConfig] = useState({ title: '', message: '', type: 'info' });
   const [isSendingAlert, setIsSendingAlert] = useState(false);
 
-  // Tab 4: Add Transaction State
+  // Tab 5: Add Transaction State
   const [txType, setTxType] = useState('credit');
   const [txAmount, setTxAmount] = useState('');
   const [txCurrency, setTxCurrency] = useState('USD');
@@ -49,13 +51,15 @@ export default function ManageUsers() {
   const [txCategory, setTxCategory] = useState('Deposit');
   const [isCreatingTx, setIsCreatingTx] = useState(false);
 
+  // KYC Updating State
+  const [isUpdatingKyc, setIsUpdatingKyc] = useState(false);
+
   // --- FETCH ALL USERS ---
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "users"), (snapshot) => {
       const fetched = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
-        // Comment out if you want to see admins in the list
         if (data.role !== "admin" && data.role !== "Administrator") {
           fetched.push({ uid: doc.id, ...data });
         }
@@ -66,13 +70,13 @@ export default function ManageUsers() {
       // Keep drawer data fresh
       if (selectedUser) {
         const liveUser = fetched.find((u) => u.uid === selectedUser.uid);
-        if (liveUser && !isSaving && !isSendingAlert && !isCreatingTx) {
+        if (liveUser && !isSaving && !isSendingAlert && !isCreatingTx && !isUpdatingKyc) {
           setSelectedUser(liveUser);
         }
       }
     });
     return () => unsub();
-  }, [selectedUser?.uid, isSaving, isSendingAlert, isCreatingTx]);
+  }, [selectedUser?.uid, isSaving, isSendingAlert, isCreatingTx, isUpdatingKyc]);
 
   // --- FETCH SELECTED USER TRANSACTIONS (BANK LEDGER) ---
   useEffect(() => {
@@ -100,7 +104,7 @@ export default function ManageUsers() {
 
   const openEditDrawer = (user) => {
     setSelectedUser(user);
-    setActiveTab("overview");
+    setActiveTab("profile"); // Default to new profile/KYC tab
     const s = (user.status || user.accountStatus || "active").toLowerCase();
     setEditStatus(s);
     setSuspendReason(user.suspensionReason || ""); 
@@ -151,6 +155,21 @@ export default function ManageUsers() {
       alert("Error saving user changes.");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleUpdateKyc = async (newStatus) => {
+    if (!window.confirm(`Are you sure you want to mark this KYC as ${newStatus}?`)) return;
+    setIsUpdatingKyc(true);
+    try {
+      await updateDoc(doc(db, "users", selectedUser.uid), {
+        kycStatus: newStatus
+      });
+    } catch (error) {
+      console.error("Failed to update KYC status:", error);
+      alert("Failed to update KYC status.");
+    } finally {
+      setIsUpdatingKyc(false);
     }
   };
 
@@ -241,6 +260,13 @@ export default function ManageUsers() {
     return { label: "Active", color: "#059669", bg: "#ecfdf5", icon: CheckCircle2 };
   };
 
+  const getKycStatusUI = (status) => {
+    const s = (status || "pending").toLowerCase();
+    if (s === "verified" || s === "approved") return { label: "Verified", color: "#059669", bg: "#ecfdf5", icon: CheckCircle2 };
+    if (s === "rejected") return { label: "Rejected", color: "#dc2626", bg: "#fef2f2", icon: XCircle };
+    return { label: "Pending", color: "#d97706", bg: "#fffbeb", icon: AlertCircle };
+  };
+
   if (isLoading) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh" }}>
@@ -254,7 +280,7 @@ export default function ManageUsers() {
       {/* Header & Search */}
       <div style={{ padding: "24px clamp(20px, 4vw, 32px)", marginBottom: 20 }}>
         <h1 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.5px" }}>User CRM</h1>
-        <p style={{ fontSize: 14, color: "#64748b", fontWeight: 500 }}>Manage client accounts, balances, cards, and transactions.</p>
+        <p style={{ fontSize: 14, color: "#64748b", fontWeight: 500 }}>Manage client accounts, balances, cards, KYC, and transactions.</p>
 
         <div style={{ marginTop: 24, display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderRadius: 16, background: "#fff", border: "1px solid #e2e8f0", boxShadow: "0 2px 4px rgba(0,0,0,0.02)", maxWidth: 500 }}>
           <Search size={18} color="#94a3b8" />
@@ -341,7 +367,7 @@ export default function ManageUsers() {
           <>
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={() => !isSaving && !isCreatingTx && setSelectedUser(null)}
+              onClick={() => !isSaving && !isCreatingTx && !isUpdatingKyc && setSelectedUser(null)}
               style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.5)", backdropFilter: "blur(4px)", zIndex: 100 }}
             />
 
@@ -366,7 +392,8 @@ export default function ManageUsers() {
 
                 {/* Tabs */}
                 <div style={{ display: 'flex', gap: 20, borderBottom: '1px solid #e2e8f0', overflowX: 'auto', scrollbarWidth: 'none' }}>
-                  <TabBtn active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} icon={ShieldAlert} label="Overview" />
+                  <TabBtn active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={User} label="Profile & KYC" />
+                  <TabBtn active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} icon={ShieldAlert} label="Security & Balances" />
                   <TabBtn active={activeTab === 'cards'} onClick={() => setActiveTab('cards')} icon={CreditCard} label="Cards" />
                   <TabBtn active={activeTab === 'transactions'} onClick={() => setActiveTab('transactions')} icon={Activity} label="Bank Feed" />
                   <TabBtn active={activeTab === 'addTx'} onClick={() => setActiveTab('addTx')} icon={PlusCircle} label="Add Entry" />
@@ -377,12 +404,108 @@ export default function ManageUsers() {
               {/* Drawer Content */}
               <div style={{ flex: 1, overflowY: "auto", padding: "24px", background: (activeTab === 'transactions' || activeTab === 'cards') ? '#f8fafc' : '#fff' }}>
                 
-                {/* TAB 1: OVERVIEW */}
+                {/* TAB 1: PROFILE & KYC (NEW) */}
+                {activeTab === 'profile' && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    
+                    {/* Personal Information */}
+                    <div style={{ marginBottom: 32 }}>
+                      <h3 style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <User size={16} color="#ea580c" /> Personal Information
+                      </h3>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                        <InfoField label="First Name" value={selectedUser.firstName} />
+                        <InfoField label="Last Name" value={selectedUser.lastName} />
+                        <InfoField label="Date of Birth" value={selectedUser.dob} icon={Calendar} />
+                        <InfoField label="Account Number" value={selectedUser.accountNumber} mono />
+                      </div>
+                    </div>
+
+                    {/* Address Information */}
+                    <div style={{ marginBottom: 32, paddingBottom: 32, borderBottom: '1px solid #f1f5f9' }}>
+                      <h3 style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <MapPin size={16} color="#ea580c" /> Address Details
+                      </h3>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                        <InfoField label="Full Address" value={selectedUser.address} />
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                          <InfoField label="State / Province" value={selectedUser.state} />
+                          <InfoField label="Country" value={selectedUser.country} icon={Globe} />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* KYC Verification */}
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                        <h3 style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", textTransform: "uppercase", letterSpacing: "0.05em", display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <ShieldCheck size={16} color="#ea580c" /> KYC Verification
+                        </h3>
+                        {(() => {
+                          const kycUI = getKycStatusUI(selectedUser.kycStatus);
+                          const KycIcon = kycUI.icon;
+                          return (
+                            <span style={{ display: 'flex', alignItems: 'center', gap: 4, background: kycUI.bg, color: kycUI.color, padding: '4px 10px', borderRadius: 99, fontSize: 11, fontWeight: 700 }}>
+                              <KycIcon size={12} /> {kycUI.label}
+                            </span>
+                          );
+                        })()}
+                      </div>
+
+                      <InfoField label="Document Type" value={selectedUser.kycDocType ? selectedUser.kycDocType.replace('_', ' ').toUpperCase() : 'Not Provided'} icon={FileText} />
+
+                      {/* KYC Images */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16 }}>
+                        <div>
+                          <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 8 }}>Front of Document</p>
+                          {selectedUser.kycDocFront ? (
+                            <a href={selectedUser.kycDocFront} target="_blank" rel="noreferrer" style={{ display: 'block', height: 120, borderRadius: 12, border: '1px solid #e2e8f0', overflow: 'hidden', background: '#f8fafc' }}>
+                              <img src={selectedUser.kycDocFront} alt="KYC Front" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            </a>
+                          ) : (
+                            <div style={{ height: 120, borderRadius: 12, border: '1px dashed #cbd5e1', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: 12, fontWeight: 500 }}>No Image</div>
+                          )}
+                        </div>
+                        <div>
+                          <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 8 }}>Back of Document</p>
+                          {selectedUser.kycDocBack ? (
+                            <a href={selectedUser.kycDocBack} target="_blank" rel="noreferrer" style={{ display: 'block', height: 120, borderRadius: 12, border: '1px solid #e2e8f0', overflow: 'hidden', background: '#f8fafc' }}>
+                              <img src={selectedUser.kycDocBack} alt="KYC Back" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            </a>
+                          ) : (
+                            <div style={{ height: 120, borderRadius: 12, border: '1px dashed #cbd5e1', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: 12, fontWeight: 500 }}>Not Required/Provided</div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* KYC Action Buttons */}
+                      <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+                        <button 
+                          disabled={isUpdatingKyc}
+                          onClick={() => handleUpdateKyc('Rejected')}
+                          style={{ flex: 1, padding: '12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+                        >
+                          <XCircle size={16} /> Reject
+                        </button>
+                        <button 
+                          disabled={isUpdatingKyc}
+                          onClick={() => handleUpdateKyc('Verified')}
+                          style={{ flex: 1, padding: '12px', background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0', borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+                        >
+                          <Check size={16} /> Approve Verified
+                        </button>
+                      </div>
+
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* TAB 2: OVERVIEW / BALANCES */}
                 {activeTab === 'overview' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <div style={{ marginBottom: 40 }}>
                       <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 800, color: "#0f172a", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 16 }}>
-                        <ShieldAlert size={16} color="#3b82f6" /> Security Status
+                        <ShieldAlert size={16} color="#ea580c" /> Security Status
                       </label>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
                         <StatusOption title="Active" desc="Normal operations allowed." val="active" current={editStatus} onSelect={setEditStatus} color="#059669" bg="#ecfdf5" icon={CheckCircle2} />
@@ -413,7 +536,7 @@ export default function ManageUsers() {
 
                     <div>
                       <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 800, color: "#0f172a", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 16 }}>
-                        <DollarSign size={16} color="#3b82f6" /> Direct Balance Editor
+                        <DollarSign size={16} color="#ea580c" /> Direct Balance Editor
                       </label>
                       <p style={{ fontSize: 13, color: '#64748b', marginBottom: 16 }}>For proper audit trails, prefer using the "Add Entry" tab instead of overriding balances directly.</p>
                       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -427,7 +550,7 @@ export default function ManageUsers() {
                               <input
                                 type="number" min="0" step="0.01" value={editBalances[c]} onChange={(e) => setEditBalances((p) => ({ ...p, [c]: e.target.value }))}
                                 style={{ width: "100%", padding: "14px 16px 14px 40px", borderRadius: 12, border: "1px solid #e2e8f0", background: "#f8fafc", fontSize: 16, fontWeight: 700, color: "#0f172a", outline: "none", transition: "border 0.2s" }}
-                                onFocus={(e) => (e.target.style.borderColor = "#3b82f6")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
+                                onFocus={(e) => (e.target.style.borderColor = "#ea580c")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
                               />
                             </div>
                           </div>
@@ -437,7 +560,7 @@ export default function ManageUsers() {
                   </motion.div>
                 )}
 
-                {/* TAB 2: VIRTUAL CARDS */}
+                {/* TAB 3: VIRTUAL CARDS */}
                 {activeTab === 'cards' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     {!selectedUser.cards || selectedUser.cards.length === 0 ? (
@@ -474,7 +597,7 @@ export default function ManageUsers() {
                                 <span style={{ color: '#0f172a', fontWeight: 800 }}>{fmt(card.spent)} / {fmt(card.limit)}</span>
                               </div>
                               <div style={{ height: 6, borderRadius: 99, background: '#e2e8f0', overflow: 'hidden' }}>
-                                <div style={{ height: '100%', width: `${Math.min((card.spent/card.limit)*100, 100)}%`, background: card.isLocked ? '#ef4444' : '#059669', borderRadius: 99 }} />
+                                <div style={{ height: '100%', width: `${Math.min((card.spent/card.limit)*100, 100)}%`, background: card.isLocked ? '#ef4444' : '#ea580c', borderRadius: 99 }} />
                               </div>
                             </div>
 
@@ -509,7 +632,7 @@ export default function ManageUsers() {
                   </motion.div>
                 )}
 
-                {/* TAB 3: BANK TRANSACTIONS FEED */}
+                {/* TAB 4: BANK TRANSACTIONS FEED */}
                 {activeTab === 'transactions' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     {isTxnsLoading ? (
@@ -543,7 +666,7 @@ export default function ManageUsers() {
                   </motion.div>
                 )}
 
-                {/* TAB 4: ADD TRANSACTION (LEDGER ENTRY) */}
+                {/* TAB 5: ADD TRANSACTION (LEDGER ENTRY) */}
                 {activeTab === 'addTx' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.5, marginBottom: 24 }}>
@@ -575,7 +698,7 @@ export default function ManageUsers() {
                             type="number" required min="0.01" step="0.01" value={txAmount} onChange={e => setTxAmount(e.target.value)}
                             placeholder="0.00"
                             style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1px solid #e2e8f0", background: "#f8fafc", fontSize: 16, fontWeight: 700, color: "#0f172a", outline: "none", transition: "border 0.2s" }}
-                            onFocus={(e) => (e.target.style.borderColor = "#0f172a")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
+                            onFocus={(e) => (e.target.style.borderColor = "#ea580c")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
                           />
                         </div>
                       </div>
@@ -586,7 +709,7 @@ export default function ManageUsers() {
                           required value={txName} onChange={e => setTxName(e.target.value)}
                           placeholder="e.g. Wire Reversal, Sign-up Bonus"
                           style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1px solid #e2e8f0", background: "#f8fafc", fontSize: 14, color: "#0f172a", outline: "none", transition: "border 0.2s" }}
-                          onFocus={(e) => (e.target.style.borderColor = "#0f172a")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
+                          onFocus={(e) => (e.target.style.borderColor = "#ea580c")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
                         />
                       </div>
 
@@ -611,7 +734,7 @@ export default function ManageUsers() {
                   </motion.div>
                 )}
 
-                {/* TAB 5: ALERTS */}
+                {/* TAB 6: ALERTS */}
                 {activeTab === 'alerts' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.5, marginBottom: 24 }}>
@@ -634,7 +757,7 @@ export default function ManageUsers() {
                           required value={alertConfig.title} onChange={e => setAlertConfig(p => ({...p, title: e.target.value}))}
                           placeholder="e.g. Account Verification Required"
                           style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1px solid #e2e8f0", background: "#f8fafc", fontSize: 14, color: "#0f172a", outline: "none", transition: "border 0.2s" }}
-                          onFocus={(e) => (e.target.style.borderColor = "#0f172a")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
+                          onFocus={(e) => (e.target.style.borderColor = "#ea580c")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
                         />
                       </div>
 
@@ -644,7 +767,7 @@ export default function ManageUsers() {
                           required value={alertConfig.message} onChange={e => setAlertConfig(p => ({...p, message: e.target.value}))}
                           placeholder="Provide details to the user..."
                           style={{ width: "100%", padding: "16px", borderRadius: 12, border: "1px solid #e2e8f0", background: "#f8fafc", fontSize: 14, color: "#0f172a", outline: "none", minHeight: 120, resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.5, transition: "border 0.2s" }}
-                          onFocus={(e) => (e.target.style.borderColor = "#0f172a")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
+                          onFocus={(e) => (e.target.style.borderColor = "#ea580c")} onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
                         />
                       </div>
 
@@ -684,9 +807,9 @@ function TabBtn({ active, onClick, icon: Icon, label }) {
       onClick={onClick}
       style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '0 0 16px 0', border: 'none', background: 'transparent', cursor: 'pointer', position: 'relative', color: active ? '#0f172a' : '#94a3b8', whiteSpace: 'nowrap' }}
     >
-      <Icon size={16} />
+      <Icon size={16} color={active ? '#ea580c' : '#94a3b8'} />
       <span style={{ fontSize: 14, fontWeight: 700 }}>{label}</span>
-      {active && <motion.div layoutId="tabLine" style={{ position: 'absolute', bottom: -1, left: 0, right: 0, height: 2, background: '#0f172a', borderRadius: '2px 2px 0 0' }} />}
+      {active && <motion.div layoutId="tabLine" style={{ position: 'absolute', bottom: -1, left: 0, right: 0, height: 2, background: '#ea580c', borderRadius: '2px 2px 0 0' }} />}
     </button>
   );
 }
@@ -714,6 +837,19 @@ function StatusOption({ title, desc, val, current, onSelect, color, bg, icon: Ic
         <p style={{ fontSize: 13, color: "#64748b", fontWeight: 500 }}>{desc}</p>
       </div>
       {isSelected && <Icon size={20} color={color} />}
+    </div>
+  );
+}
+
+function InfoField({ label, value, icon: Icon, mono }) {
+  return (
+    <div style={{ background: '#f8fafc', padding: '12px 16px', borderRadius: 12, border: '1px solid #e2e8f0' }}>
+      <p style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+        {Icon && <Icon size={12} />} {label}
+      </p>
+      <p style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', fontFamily: mono ? 'monospace' : 'inherit', letterSpacing: mono ? '0.05em' : 'normal', wordBreak: 'break-word' }}>
+        {value || 'Not provided'}
+      </p>
     </div>
   );
 }

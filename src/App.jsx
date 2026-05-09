@@ -37,6 +37,7 @@ import ManageTickets from "./pages/admin/ManageTickets";
 import "./index.css";
 import Receive from "./pages/dashboard/Receive";
 import Cards from "./pages/dashboard/Cards";
+import Register from "./pages/auth/Register";
 
 // ─── PREMIUM LOADER COMPONENT ─────────────────────────────────────────────
 function FullScreenLoader({ text }) {
@@ -160,6 +161,7 @@ export default function App() {
           {/* --- PUBLIC ROUTES --- */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} /> 
           <Route path="/suspended" element={<Suspended />} />
 
           {/* --- PROTECTED USER ROUTES --- */}

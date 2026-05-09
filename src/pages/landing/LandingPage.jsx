@@ -317,7 +317,7 @@ export default function Landing() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/register")}
             style={{
               padding: "10px 24px",
               borderRadius: 99,
@@ -394,7 +394,7 @@ export default function Landing() {
               <button
                 onClick={() => {
                   setIsMenuOpen(false);
-                  navigate("/login");
+                  navigate("/register");
                 }}
                 style={{
                   background: "#ea580c",
@@ -507,7 +507,7 @@ export default function Landing() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/register")}
                     style={{
                       padding: "16px 32px",
                       borderRadius: 99,
@@ -1431,7 +1431,7 @@ export default function Landing() {
               your free account in minutes.
             </p>
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/register")}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
